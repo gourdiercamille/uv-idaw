@@ -1,0 +1,29 @@
+h3{
+    color:red;
+    border : 2px solid red;
+}
+
+h1{
+    color: rgb(5, 34, 87);
+    text-align: center;
+}
+
+.police{
+    font-family: Arial, sans-serif;
+}
+
+.conteneur-flexible{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #0AD;
+}
+
+.pause{
+    display: flex;
+    background-color: white;
+    height : 10px;
+}
+
+.darkblue{
+    color: rgb(25, 60, 125); 
+}
