@@ -1,0 +1,50 @@
+h3{
+    color:red;
+    border : 2px solid red;
+}
+
+h1{
+    color: rgb(5, 34, 87);
+    text-align: center;
+}
+
+.police{
+    font-family: Arial, sans-serif;
+}
+
+.petit {
+    font-size: 10px;
+  }
+
+.conteneur-flexible{
+    display: flex;
+    flex-wrap: wrap;
+    background: linear-gradient(to top, red, yellow);
+}
+
+.pause{
+    display: flex;
+    background-color: white;
+    height : 10px;
+}
+
+.darkblue{
+    color: rgb(25, 60, 125); 
+}
+
+#flex1 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+  
+#flex2 {
+    /* float: right; */
+    position:absolute;
+    bottom: 0;
+    right: 0;
+    margin: 15px;
+    display:block;
+    width: 150px;
+    height: 80px;
+  }

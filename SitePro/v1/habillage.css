@@ -27,3 +27,7 @@ h1{
 .darkblue{
     color: rgb(25, 60, 125); 
 }
+
+.a_droite{
+    text-align: right;
+}
