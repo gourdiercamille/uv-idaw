@@ -4,7 +4,7 @@
             echo '<nav class="menu"><ul>';
             $mymenu = array(
                 // idPage titre
-                'index' => array('Menu'),
+                'accueil' => array('Accueil'),
                 'cv' => array('CV'),
                 'projets' => array('Skills'),
                 'hobbies' => array('Hobbies')
