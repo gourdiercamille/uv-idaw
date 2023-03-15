@@ -5,9 +5,9 @@
     if(isset($_GET['page'])) {
         $currentPageId = $_GET['page'];
     }
-?>
-<?php
     renderMenuToHTML($currentPageId);
+    $lang=isset($_GET['lang']) ? $_GET['lang'] : 'fr';
+    require_once("../$lang/template_header.php")
 ?>
 <section class="corps">
 <?php
@@ -21,5 +21,5 @@
 ?>
 </section>
 <?php
-    require_once("template_header.php");
+    require_once("template_footer.php");
 ?>

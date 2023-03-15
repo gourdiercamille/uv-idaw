@@ -1,10 +1,6 @@
-<?php
-    require_once('template_header.php');
-    renderMenuToHTML('projets');
-?>
-    <header>
-        <h1 class="police"> Compétences</h1>
-    </header>
+
+    
+        <h2 class="police"> Compétences</h2>
         <div class="conteneur-flexible">
         <h4 class="police"> Langages informatiques </h4> 
         <pre class="police">
@@ -28,6 +24,3 @@
             Sens des responsabilités
         </pre>
         </div>
-<?php
-    require_once('template_footer.php');
-?>

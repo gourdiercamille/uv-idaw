@@ -1,8 +1,4 @@
-<?php
-    require_once('template_header.php');
-    renderMenuToHTML('hobbies');
-?>
-<body>
+
         <h1 class="police"> Activités Extrascolaires </h1>
         <h2 class="police darkblue"> Sports </h2>
         <ul>
@@ -25,6 +21,3 @@
                 </p>
             </li>
         </ul>
-        <?php
-    require_once('template_footer.php');
-?>
