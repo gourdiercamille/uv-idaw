@@ -6,8 +6,6 @@
         $currentPageId = $_GET['page'];
     }
     renderMenuToHTML($currentPageId);
-    $lang=isset($_GET['lang']) ? $_GET['lang'] : 'fr';
-    require_once("../$lang/template_header.php")
 ?>
 <section class="corps">
 <?php
