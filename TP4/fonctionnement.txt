@@ -1,0 +1,7 @@
+Pour recreer la base de données:
+
+1) Creer une base de donnée appelée par exemple 'test' sur php my admin sur votre machine
+2) allez dans le fichier config.php sur votre éditeur de code
+3) changez le nom 'dbtest' à la ligne 4 en 'test' (ou le nom de votre base de données)
+4) Lancez db_init dans votre navigateur
+5) c'est bon votre base de données pour le tp est crée sur votre machine ! 

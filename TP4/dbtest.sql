@@ -42,8 +42,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `login`, `email`) VALUES
 (1, 'cgourdier', 'camille.gourdier@etu.imt-nord-europe.fr'),
 (2, 'benpuz', 'benjamin.puzenat@etu.imt-nord-europe.fr'),
-(3, 'paugen', 'paul.gendreau@etu.imt-nord-europe.fr\r\n'),
-(4, '', '');
+(3, 'paugen', 'paul.gendreau@etu.imt-nord-europe.fr\r\n');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
