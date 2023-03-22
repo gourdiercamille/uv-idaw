@@ -2,9 +2,6 @@
 
 require_once('init_pdo.php');
 
-try {
-    $pdo = new PDO($connectionString,_MYSQL_USER,_MYSQL_PASSWORD,$options);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-
 require_once('affichage_user.php');
+
+$pdo=null;

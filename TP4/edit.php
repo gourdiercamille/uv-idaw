@@ -2,18 +2,21 @@
 
 require_once('init_pdo.php');
 
-try{
-    $pdo = new PDO($connectionString,_MYSQL_USER,_MYSQL_PASSWORD,$options);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
     $id_edit=$_GET['id'];
     $sql1 = "SELECT login FROM Users WHERE id=$id_edit";
-    $sql1 = "SELECT email FROM Users WHERE id=$id_edit";
-    $login_toEdit = $pdo->prepare($sql1);
-    $email_toEdit = $pdo->prepare($sql1);
-}
+    $sql2 = "SELECT email FROM Users WHERE id=$id_edit";
+    $request1 = $pdo->prepare($sql1);
+    $request2 = $pdo->prepare($sql2);
+    $request1->execute();
+    $request2->execute();
+    $resultat1 = $request1->fetch(PDO::FETCH_ASSOC);
+    $resultat2 = $request2->fetch(PDO::FETCH_ASSOC);
+
 
 require_once('affichage_user.php');
+
+
 
 echo'  
     <h3> Modifier un utilisateur :</h3>
@@ -21,13 +24,25 @@ echo'
         <table>
             <tr>
                 <th>Login :</th>
-                <td><input type="text" id="login" name="login" value='$login_toEdit'"></td>
+                <td><input type="text" id="editlogin" name="editlogin" value=' . $resultat1['login'] . '></td>
             </tr><tr>
                 <th>Email :</th>
-                <td><input type="email" id="email" name="email" value='$email_toEdit'></td>
+                <td><input type="email" id="editemail" name="editemail" value=' . $resultat2['email'] . '></td>
             </tr><tr>
                 <th></th>
-                <td><input type="submit" name="add" value="Modifier" /></td>
+                <td><input type="submit" name="edit" value="Modifier" /></td>
             </tr>
         </table>
-    </form>'
+    </form>';
+
+    if(isset($_POST['edit'])){
+        $newlogin = $_POST['editlogin'];
+        $newemail = $_POST['editemail'];
+        $sql_edit = "UPDATE users SET login = '" . $newlogin . "' , email = '" . $newemail . "' WHERE id = $id_edit";
+        $edit_user = $pdo->prepare($sql_edit);
+        $edit_user->execute();
+    }
+
+    $pdo = null;
+
+    ?>

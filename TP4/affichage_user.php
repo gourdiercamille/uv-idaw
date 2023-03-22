@@ -1,26 +1,7 @@
+
 <?php
 
-catch (PDOException $erreur) {
-    echo 'Erreur : '.$erreur->getMessage();
-}
-       
-    if (isset($_POST['add'])) {
-        $login = $_POST['login'];
-        $email = $_POST['email'];
-
-        $sql = "INSERT INTO users(login ,email) VALUES('$login' , '$email');";
-         
-        $pdo->exec($sql);
-    }
-
-
-    $request = $pdo->prepare("select * from users");
-
-    $request->execute();
-
-    $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
-
-    echo '<!DOCTYPE html> 
+echo '<!DOCTYPE html> 
         <html>
         <body>
             <h1> Liste des utilisateurs </h1>
@@ -33,6 +14,23 @@ catch (PDOException $erreur) {
                 <td>  </td>
             </tr>' ;
     
+
+            if (isset($_POST['add'])) {
+                $login = $_POST['login'];
+                $email = $_POST['email'];
+            
+                $sql = "INSERT INTO users(login ,email) VALUES('$login' , '$email');";
+                 
+                $pdo->exec($sql);
+            }
+            
+            $request = $pdo->prepare("select * from users");
+            
+            $request->execute();
+            
+            $resultat = $request->fetchAll(PDO::FETCH_ASSOC);
+
+
     foreach ($resultat as $row) {
         echo '<tr> 
                 <td> ' . $row['id'] . ' </td> 
@@ -43,8 +41,8 @@ catch (PDOException $erreur) {
             </tr>';
     }
 
-    echo'  
-    </table>
+
+    echo '</table>
     <br>
     <h3> Ajouter un utilisateur :</h3>
     <form id="add_form" method="POST">
@@ -63,5 +61,3 @@ catch (PDOException $erreur) {
     </form> 
     </body>';
 
-    $pdo = null;
-?>
