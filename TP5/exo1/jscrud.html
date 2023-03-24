@@ -47,7 +47,7 @@
         <div class="form-group row">
             <label for="DevWeb" class="col-sm-2 col-form-label">Aime le cours de Dev Web</label>
             <div class="col-sm-3">
-            <input type="checkbox" class="form-control" id="DevWeb" >
+            <input type="checkbox" checked="checked" class="form-control" id="DevWeb" >
         </div>
         <div class="form-group row">
             <label for="inputRq" class="col-sm-2 col-form-label">Remarques</label>
@@ -62,7 +62,7 @@
         </div>
     </form>
     <script>
-        // Add event listeners for the "Modifier" buttons
+
         $(document).on("click", ".btn-edit", function() {
             let row = $(this).closest("tr");
             let nom = row.find("td:eq(0)").text();
@@ -70,43 +70,41 @@
             let datedenaissance = row.find("td:eq(2)").text();
             let aimelecours = row.find("td:eq(3)").text();
             let remarques = row.find("td:eq(4)").text();
-            
             $("#inputNom").val(nom);
             $("#inputPrenom").val(prenom);
             $("#inputDatedeNaissance").val(datedenaissance);
             $("#DevWeb").val(aimelecours);
             $("#inputRq").val(remarques);
-            
             row.remove();
         });
-        //Add event listeners for the "Supprimer" buttons
+
         $(document).on("click", ".btn-delete", function() {
             let row = $(this).closest("tr");
             row.remove();
         });
+        
         function onFormSubmit() {
-        // prevent the form to be sent to the server
-        event.preventDefault();
-        let nom = $("#inputNom").val();
-        let prenom = $("#inputPrenom").val();
-        let datedenaissance = $("#inputDatedeNaissance").val();
-        if ($("#DevWeb").val()=='on') {
-            let aimelecours = "Ouiii"
-        } else{
-            let aimelecours = "Euh non"
-        };
-        let remarques = $("#inputRq").val();
-        $("#studentsTableBody").append(`
-            <tr>
-                <td>${nom}</td>
-                <td>${prenom}</td>
-                <td>${datedenaissance}</td>
-                <td>${aimelecours}</td>
-                <td>${remarques}</td>
-                <td><button type="button" class="btn btn-primary btn-sm btn-edit">Modifier</button>
-                    <button type="button" class="btn btn-danger btn-sm btn-delete">Supprimer</button></td>
-            </tr>`);
-        }
+            event.preventDefault();
+            let nom = $("#inputNom").val();
+            let prenom = $("#inputPrenom").val();
+            let datedenaissance = $("#inputDatedeNaissance").val();
+            if ( $("#DevWeb").prop("checked") ){
+                let aimelecours="Ouiii";
+            } else {
+                let aimelecours="Euh non";
+            };
+            let remarques = $("#inputRq").val();
+            $("#studentsTableBody").append(`
+                <tr>
+                    <td>${nom}</td>
+                    <td>${prenom}</td>
+                    <td>${datedenaissance}</td>
+                    <td>${aimelecours}</td>
+                    <td>${remarques}</td>
+                    <td><button type="button" class="btn btn-primary btn-sm btn-edit">Modifier</button>
+                        <button type="button" class="btn btn-danger btn-sm btn-delete">Supprimer</button></td>
+                </tr>`);
+            }
     </script>
 </body>
 </html>

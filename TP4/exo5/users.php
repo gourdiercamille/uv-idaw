@@ -22,15 +22,16 @@
             'login' => $_POST['login'],
             'email' => $_POST['email']
         ];
+
+        $user_id = $pdo->lastInsertId();
+
+        require_once('add.php');
         
-        // Renvoi de la réponse HTTP avec le code 201 Created et l'URL de la nouvelle ressource
-        header('HTTP/1.1 201 Created');
-        echo "{ \"Location\" : \"".API_URL_PREFIX."/users.php/' . $user['id']\" }";
+        http_response_code(201);
+        header('Location: '._API_URL.'/users.php/' .$user_id);
 
         $pdo = null;
 
-        // Renvoi des informations de l'utilisateur créé au format JSON dans le corps de la réponse
-        header('Content-Type: application/json');
         echo json_encode($user);
 
     } else {
