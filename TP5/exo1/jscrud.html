@@ -88,11 +88,12 @@
             let nom = $("#inputNom").val();
             let prenom = $("#inputPrenom").val();
             let datedenaissance = $("#inputDatedeNaissance").val();
-            if ( $("#DevWeb").prop("checked") ){
+            /*if ( $("#DevWeb").prop("checked") ){
                 let aimelecours="Ouiii";
             } else {
                 let aimelecours="Euh non";
-            };
+            };*/
+            let aimelecours="Euh oui";
             let remarques = $("#inputRq").val();
             $("#studentsTableBody").append(`
                 <tr>
@@ -104,6 +105,10 @@
                     <td><button type="button" class="btn btn-primary btn-sm btn-edit">Modifier</button>
                         <button type="button" class="btn btn-danger btn-sm btn-delete">Supprimer</button></td>
                 </tr>`);
+            $("#inputNom").val('');
+            $("#inputPrenom").val('');
+            $("#inputDatedeNaissance").val('');
+            $("#inputRq").val('');
             }
     </script>
 </body>

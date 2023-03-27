@@ -1,0 +1,1 @@
+Pensez à modifier le dossier config et à importer votre base de donnée
