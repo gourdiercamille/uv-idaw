@@ -7,7 +7,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 </head>
-
 <body>
     <div class="container">
         <h1>Liste des utilisateurs</h1>
@@ -24,10 +23,11 @@
         </table>
     </div>
     <script>
+        URL_API = <?php require_once('config.php'); echo URL_API ; ?>;
         // Fonction pour récupérer la liste des utilisateurs via l'API
         function getUsers() {
             $.ajax({
-                url: URL_API , 
+                url: $url_api , 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
