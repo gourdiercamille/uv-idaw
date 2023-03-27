@@ -27,7 +27,7 @@
         // Fonction pour récupérer la liste des utilisateurs via l'API
         function getUsers() {
             $.ajax({
-                url: 'http://localhost:8888/IDAW/TP5/exo2/API_REST_COPY/api.php', // URL de l'API
+                url: URL_API , 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -53,7 +53,7 @@
         // Fonction pour ajouter un utilisateur via l'API
         function addUser(login, email) {
             $.ajax({
-                url: URL_API, // URL de l'API
+                url: URL_API, 
                 type: 'POST',
                 data: { login: login, email: email },
                 dataType: 'json',
@@ -71,7 +71,7 @@
     function editUser(id, login, email) {
         console.log('edit ' + id);
         $.ajax({
-            url: URL_API, // URL de l'API avec l'ID de l'utilisateur
+            url: URL_API, 
             type: 'PUT',
             data: JSON.stringify({ id : id, login: login, email: email }),
             dataType: 'json',

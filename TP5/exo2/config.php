@@ -4,5 +4,5 @@
     define('_MYSQL_DBNAME','dbtest');
     define('_MYSQL_USER','root');
     define('_MYSQL_PASSWORD','');
-    define('URL_API','http://localhost/IDAW/TP5/exo2/api.php');
+    define('URL_API','http://localhost/IDAW/TP5/exo2/api.php'); // URL de l'API
 ?>
