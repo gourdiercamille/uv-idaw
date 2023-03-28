@@ -18,7 +18,7 @@ try {
     $pdo->exec( "SET FOREIGN_KEY_CHECKS = 1");
 
     // Importation de la structure et des données de test
-    $sql = file_get_contents('dbtest.sql');
+    $sql = file_get_contents('projet_idaw.sql');
     $pdo->exec($sql);
 
 } 
