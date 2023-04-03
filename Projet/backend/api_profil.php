@@ -1,4 +1,8 @@
 <?php
+
+header("Access-Control-Allow-Origin: http://localhost:3306/IDAW_PROJET/Projet/frontend/profil.php");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+
 require_once('profil.php');
 
 $method = $_SERVER['REQUEST_METHOD'];

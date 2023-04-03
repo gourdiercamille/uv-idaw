@@ -28,7 +28,7 @@
             <tbody></tbody>
         </table>
     </div>
-    <button onclick="window.location.href='profil.php'">Retour au profil</button>
+    <button onclick="window.location.href='profil.php'">Voir Profil</button>
 
     <script>
         URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";

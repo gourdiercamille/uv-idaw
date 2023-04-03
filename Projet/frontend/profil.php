@@ -3,30 +3,34 @@
     <header>
         <title>Profil</title>
         <meta charset="utf8">
-        <link rel="stylesheet" href="style.css" type="text/css" media="screen" title="default" charset="utf-8" />
+        <link rel="stylesheet" type="text/css" media="screen" title="default" charset="utf-8" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     </header>
     <body>
         <h1>Profil Utilisateur</h1>
         <button onclick="window.location.href='dashboard.php'">Retour</button>
         <script>
-        URL_API = <?php require_once('config.php'); echo URL_API_PROFIL ; ?>;
+        URL_API = '<?php require_once('config.php'); echo URL_API_PROFIL; ?>';
+
         // Fonction pour récupérer les infos de l'utilisateur via l'API
         function getInfos() {
             $.ajax({
-                url: $url_api , 
+                url: URL_API , 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     var user = JSON.parse(response);
                     var infos = {
-                        nom: user.NOM,
-                        prenom: user.PRENOM,
-                        age: user.age,
-                        sexe: user.sexe,
-                        taille: user.TAILLE,
-                        poids: user.POIDS,
-                        sport: user.sport,
+                        nom : user.NOM,
+                        prenom : user.PRENOM,
+                        age : user.age,
+                        sexe : user.sexe,
+                        taille : user.TAILLE,
+                        poids : user.POIDS,
+                        sport : user.sport,
                     };
+                    showUserInfos(infos);
                 },
                 error: function() {
                     // Si la requête échoue, on affiche une erreur
@@ -37,13 +41,15 @@
 
         // Fonction pour afficher les infos de l'utilisateur
         function showUserInfos(user) {
-            $("li:nth-child(1)").text("Nom : " + user.nom );
-            $("li:nth-child(2)").text("Prénom : " + user.prenom );                
-            $("li:nth-child(3)").text("Tranche d'âge : " + user.age );
-            $("li:nth-child(4)").text("Sexe : " + user.sexe );
-            $("li:nth-child(5)").text("Taille : " + user.taille );
-            $("li:nth-child(6)").text("Poids : " + user.poids );
-            $("li:nth-child(7)").text("Sport : " + user.sport );
+            $("ul").html(
+                "<li>Nom : " + user.nom + "</li>" +
+                "<li>Prénom : " + user.prenom + "</li>" +
+                "<li>Tranche d'âge : " + user.age + "</li>" +
+                "<li>Sexe : " + user.sexe + "</li>" +
+                "<li>Taille : " + user.taille + "</li>" +
+                "<li>Poids : " + user.poids + "</li>" +
+                "<li>Sport : " + user.sport + "</li>"
+            );
         }
 
         // Fonction pour modifier les infos de l'utilisateur via l'API
@@ -56,7 +62,6 @@
                 success: function(response) {
                     // Si la requête réussit, on récupère les nouvelles donées de l'utilisateur et on les affiche
                     getInfos();
-                    showUserInfos(infos);
                 },
                 error: function() {
                     // Si la requête échoue, on affiche une erreur
@@ -67,10 +72,8 @@
 
         //On appelle les fonctions
         $(document).ready(function() {
-            // On récupère les utilisateurs
+            // On récupère les infos de l'utilisateur
             getInfos();
-            // On affiche les utilisateurs
-            showUserInfos(infos);
             // On modifie les infos de l'utilisateur
             $('#edit_form').on('click', '.edit', function() {
                 var login = $(this).data('login');
@@ -80,17 +83,23 @@
                 var taille = $('#editTaille').val();
                 editUser(login, age, sport, poids, taille);
                 getInfos();
-                showUserInfos(infos);
             });
         });
+
+        function toggleForm() {
+                var form = document.getElementById("edit_form");
+                if (form.style.display === "none") {
+                    form.style.display = "block";
+                } else {
+                    form.style.display = "none";
+                }
+        }
 
         </script>
         <div>
             <h3> Informations </h3>
-            <ul>
-                <script> showUserInfos(infos); </script>
-                <button class="btn-edit">Edit</button>
-                <form id="edit_form" method="POST">
+                <button class="btn-edit" onclick="toggleForm()">Edit</button>
+                <form id="edit_form" method="POST" style="display:none;">
                     <table>
                         <tr>
                             <th>Age :</th>
@@ -109,17 +118,16 @@
                             </select></td>
                         </tr><tr>
                             <th>Poids :</th>
-                            <td><input type="text" id="editPoids" name="editlogin" value=></td>
+                            <td><input type="text" id="editPoids" name="editlogin" value=""></td>
                         </tr><tr>
                             <th>Taille :</th>
-                            <td><input type="email" id="editTaille" name="editemail" value=></td>
+                            <td><input type="email" id="editTaille" name="editemail" value=""></td>
                         </tr><tr>
                             <th></th>
-                            <td><input type="submit" name="edit" value="Valider les Modifications" /></td>
+                            <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm()"/></td>
                         </tr>
                     </table>
                 </form>
-            </ul>
         </div>
     </body>
 </html>
