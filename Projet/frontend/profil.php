@@ -21,7 +21,7 @@
                     var infos = {
                         nom: user.NOM,
                         prenom: user.PRENOM,
-                        age: user.AGE,
+                        age: user.age,
                         sexe: user.sexe,
                         taille: user.TAILLE,
                         poids: user.POIDS,
@@ -47,11 +47,11 @@
         }
 
         // Fonction pour modifier les infos de l'utilisateur via l'API
-        function editUser(login, tranche_age, intensite_sport, poids, taille) {
+        function editUser(login, age, sport, poids, taille) {
             $.ajax({
                 url: URL_API, 
                 type: 'PUT',
-                data: JSON.stringify({ /*id : id, login: login, email: email*/ }),
+                data: JSON.stringify({  login: login, age: age, sport: sport, poids: poids, taille: taille }),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on récupère les nouvelles donées de l'utilisateur et on les affiche
@@ -74,11 +74,13 @@
             // On modifie les infos de l'utilisateur
             $('#edit_form').on('click', '.edit', function() {
                 var login = $(this).data('login');
-                var tranche_age = ;
-                var intensite_sport = ;
-                var poids = ;
-                var taille = ;
-                editUser(login, tranche_age, intensite_sport, poids, taille);
+                var age = $('#editAge').val();
+                var sport = $('#editSport').val();
+                var poids = $('#editPoids').val();
+                var taille = $('#editTaille').val();
+                editUser(login, age, sport, poids, taille);
+                getInfos();
+                showUserInfos(infos);
             });
         });
 
@@ -92,16 +94,25 @@
                     <table>
                         <tr>
                             <th>Age :</th>
-                            <td></label><select id="sexe" name="sexe"><option value="1">Femme</option><option value="2">Homme</option><option value="3">Ne souhaite pas répondre</option></select></td>
+                            <td></label><select id="editAge" name="sexe">
+                                <option value="1">18-25ans</option>
+                                <option value="2">26-40ans</option>
+                                <option value="3">41-60ans</option>
+                                <option value="4">61-80ans</option>
+                            </select></td>
                         </tr><tr>
                             <th>Intensité de Pratique Sportive :</th>
-                            <td></label><select id="sexe" name="sexe"><option value="1">Faible</option><option value="2">Modérée</option><option value="3">Elevée</option></select></td>
+                            <td></label><select id="editSport" name="sexe">
+                                <option value="1">Faible</option>
+                                <option value="2">Modérée</option>
+                                <option value="3">Elevée</option>
+                            </select></td>
                         </tr><tr>
                             <th>Poids :</th>
-                            <td><input type="text" id="editpoids" name="editlogin" value=></td>
+                            <td><input type="text" id="editPoids" name="editlogin" value=></td>
                         </tr><tr>
                             <th>Taille :</th>
-                            <td><input type="email" id="editemail" name="editemail" value=></td>
+                            <td><input type="email" id="editTaille" name="editemail" value=></td>
                         </tr><tr>
                             <th></th>
                             <td><input type="submit" name="edit" value="Valider les Modifications" /></td>
