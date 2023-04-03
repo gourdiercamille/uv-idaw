@@ -5,8 +5,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 //get repas
 if ($method == 'GET') {
-    if (isset($_GET['login'])) {
-        $user = getRepasByLogin($_GET['login']);
+    if (isset($_GET['LOGIN'])) {
+        $$repas = getRepasByLogin($_GET['LOGIN']);
         if ($repas) {
             echo json_encode($repas);
         } else {
@@ -15,7 +15,7 @@ if ($method == 'GET') {
         }
     } else {
         $repas = getAllRepas();
-        echo json_encode($repas);
+        echo json_encode(mb_convert_encoding($repas, "UTF-8"));
     }
 }
 
@@ -34,8 +34,8 @@ if ($method == 'POST') {
 
 //delete repas
 if ($method == 'DELETE') {
-    if (isset($_GET['id'])) {
-        $result = deleteRepasByLogin($_GET['login']);
+    if (isset($_GET['LOGIN'])) {
+        $result = deleteRepasByLogin($_GET['LOGIN']);
         if ($result) {
             header('HTTP/1.1 204 No Content');
         } else {

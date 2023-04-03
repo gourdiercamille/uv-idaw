@@ -21,7 +21,6 @@
                     <th>Quantité de fibres</th>
                     <th>Quantité de sel</th>
                     <th>Quantité de vitamines</th>
-                    <th>Quantité de lipides</th>
                     <th>Kcal ingérées</th>
                     <th>Pour la suite...</th>
                 </tr>
@@ -29,9 +28,9 @@
             <tbody></tbody>
         </table>
     </div>
-    <script>
-    console.log('test');
+    <button onclick="window.location.href='profil.php'">Retour au profil</button>
 
+    <script>
         URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
@@ -46,13 +45,14 @@
                     $.each(response, function(i, item) {
                         table.row.add([
                             item.DATE,
-                            item.ID_ALIMENT,
-                            item.RATIO,
-                            item.RATIO,
-                            item.RATIO,
-                            item.RATIO,
-                            item.RATIO,
-                            item.RATIO,
+                            item.NOM,
+                            item.micronutriment_1,
+                            item.micronutriment_2,
+                            item.micronutriment_3,
+                            item.micronutriment_4,
+                            item.micronutriment_5,
+                            item.micronutriment_6,
+                            item.calculKcal,
                             '<button class="btn btn-sm btn-primary edit-btn" data-id="' + item.ID_ALIMENT + '">Modifier</button> ' +
                             '<button class="btn btn-sm btn-danger delete-btn" data-id="' + item.ID_ALIMENT + '">Supprimer</button>'
                         ]).draw();
@@ -101,7 +101,7 @@
     // Fonction pour supprimer un repas via l'API
     function deleteRepas(login, id_aliment) {
         $.ajax({
-            url: URL_API + '?login=' + login + '&id_aliment=' + id_aliment, // URL de l'API avec le login de l'utilisateur et l'id de l'aliment à supprimer
+            url: URL_API + '?LOGIN=' + login + '&ID_ALIMENT=' + id_aliment, // URL de l'API avec le login de l'utilisateur et l'id de l'aliment à supprimer
             type: 'DELETE',
             dataType: 'json',
             success: function(response) {
@@ -136,6 +136,7 @@
         });
         // Suppression d'un repas
         $('#myTable tbody').on('click', '.delete-btn', function() {
+            console.log($(this).data);
             var login = $(this).data('login');
             var id_aliment = $(this).data('id_aliment');
             if (confirm('Voulez-vous vraiment supprimer ce repas ?')) {
