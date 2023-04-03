@@ -118,10 +118,10 @@
                             </select></td>
                         </tr><tr>
                             <th>Poids :</th>
-                            <td><input type="text" id="editPoids" name="editlogin" value=""></td>
+                            <td><input type="text" id="editPoids" name="editPoids" value=""></td>
                         </tr><tr>
                             <th>Taille :</th>
-                            <td><input type="email" id="editTaille" name="editemail" value=""></td>
+                            <td><input type="email" id="editTaille" name="editTaille" value=""></td>
                         </tr><tr>
                             <th></th>
                             <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm()"/></td>

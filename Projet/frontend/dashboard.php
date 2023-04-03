@@ -32,7 +32,7 @@
     <button onclick="window.location.href='profil.php'">Voir Profil</button>
 
     <script>
-        URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";
+        URL_API = "<?php require_once('config.php'); echo URL_API_DASHBOARD ; ?>";
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
             $.ajax({
@@ -55,8 +55,8 @@
                             item.micronutriment_5,
                             item.micronutriment_6,
                             item.calculKcal,
-                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '">Modifier</button> ' +
-                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '">Supprimer</button>'
+                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm()">Modifier</button> ' +
+                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
                         ]).draw();
                     });
                 },
@@ -84,11 +84,11 @@
         });
     }
     // Fonction pour modifier un repas via l'API
-    function editRepas(login, id_aliment, quantite) {
+    function editRepas(date, id_aliment, quantite) {
         $.ajax({
             url: URL_API, 
             type: 'PUT',
-            data: JSON.stringify({ LOGIN: login, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
+            data: JSON.stringify({ DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
             dataType: 'json',
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
@@ -132,9 +132,10 @@
         // Modification d'un repas
         $('#myTable tbody').on('click', '.edit-btn', function() {
             var login = $(this).data('login');
-            var id_aliment = prompt('Entrez le nouvel id de l\'aliment :');
-            var quantite = prompt('Entrez la nouvelle quantité :');
-            editRepas(login, id_aliment, quantite);
+            var date = $('#editDate').val();
+            var id_aliment = $('#editRepas').val();;
+            var quantite = $('#editQuantite').val();
+            editRepas(date, id_aliment, quantite);
         });
         // Suppression d'un repas
         $('#myTable tbody').on('click', '.delete-btn', function() {
@@ -146,6 +147,44 @@
         });
 
     });
+
+    function toggleForm() {
+        var form = document.getElementById("edit_form");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
 </script>
+
+        <button class="btn-add" onclick="toggleForm()">Ajouter un Aliment</button>
+        
+        <form id="edit_repas_form" method="POST" style="display:none;">
+            <fieldset>
+                <legend>Modifier un repas</legend>
+            </fieldset>
+            <table>
+                <tr>
+                    <th>Date :</th>
+                    <td><input type="date" id="editDate" name="editDate" value=""></td>
+                </tr><tr>
+                    <th>Repas :</th>
+                    <td><input type="text" id="editRepas" name="editRepas" value=""></td>
+                </tr><tr>
+                    <th>Quantité :</th>
+                    <td><input type="email" id="editQuantite" name="editQuantite" value=""></td>
+                </tr><tr>
+                    <th></th>
+                    <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm()"/></td>
+                </tr>
+            </table>
+        </form>
+
+
+
+
+</body>
+</html>
 
 

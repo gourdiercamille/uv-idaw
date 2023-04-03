@@ -2,6 +2,9 @@
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require_once('profil.php');
 
@@ -29,7 +32,7 @@ if ($method == 'GET') {
 //update user
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateUserByLogin($data['login'], $data['age'], $data['sport'], $data['poids'], $data['taille']);
+    $result = updateUserByLogin($data['LOGIN'], $data['ID_TRANCHE_AGE'], $data['ID_SPORT'], $data['POIDS'], $data['TAILLE']);
     if ($result) {
         echo json_encode(['success' => 'User updated successfully']);
     } else {
