@@ -15,6 +15,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Repas</th>
+                    <th>Quantité</th>
                     <th>Quantité de glucides</th>
                     <th>Quantité de lipides</th>
                     <th>Quantité de protéïnes</th>
@@ -46,6 +47,7 @@
                         table.row.add([
                             item.DATE,
                             item.NOM,
+                            item.QUANTITE,
                             item.micronutriment_1,
                             item.micronutriment_2,
                             item.micronutriment_3,
