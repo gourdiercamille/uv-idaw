@@ -25,7 +25,7 @@ if ($method == 'GET') {
 //update user
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateUserByLogin($data['login'], $data['tranche_age'], $data['intensite_sport'], $data['poids'], $data['taille']);
+    $result = updateUserByLogin($data['login'], $data['age'], $data['sport'], $data['poids'], $data['taille']);
     if ($result) {
         echo json_encode(['success' => 'User updated successfully']);
     } else {

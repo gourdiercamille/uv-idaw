@@ -41,9 +41,9 @@
             }
         }
 
-        function updateUserByLogin($login, $tranche_age, $intensite_sport, $poids, $taille) {
+        function updateUserByLogin($login, $age, $sport, $poids, $taille) {
             global $pdo;
-            $request = $pdo->prepare("update utilisateur set ID_TRANCHE_AGE = '$tranche_age' , ID_SPORT = '$intensite_sport' , POIDS = '$poids' , TAILLE = '$taille' where LOGIN = $login");
+            $request = $pdo->prepare("update utilisateur set ID_TRANCHE_AGE = '$age' , ID_SPORT = '$sport' , POIDS = '$poids' , TAILLE = '$taille' where LOGIN = $login");
             $result = $request->execute();
             return $result;
         }
