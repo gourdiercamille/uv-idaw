@@ -4,7 +4,7 @@
 
     function getAllRepas() {
         global $pdo;
-        $request = $pdo->prepare("SELECT utilisateur.LOGIN, aliment.NOM, manger.QUANTITE, manger.DATE, 
+        $request = $pdo->prepare("SELECT utilisateur.LOGIN, aliment.ID_ALIMENT, aliment.NOM, manger.QUANTITE, manger.DATE, 
         MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 1 THEN contenir.RATIO ELSE 0 END) AS micronutriment_1,
         MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 2 THEN contenir.RATIO ELSE 0 END) AS micronutriment_2,
         MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 3 THEN contenir.RATIO ELSE 0 END) AS micronutriment_3,
@@ -18,7 +18,7 @@
         JOIN contenir ON manger.ID_ALIMENT = contenir.ID_ALIMENT
         JOIN aliment ON manger.ID_ALIMENT = aliment.ID_ALIMENT
         JOIN utilisateur ON manger.LOGIN = utilisateur.LOGIN
-        GROUP BY aliment.NOM, manger.QUANTITE, manger.DATE, utilisateur.LOGIN
+        GROUP BY aliment.NOM, manger.QUANTITE, manger.DATE, utilisateur.LOGIN, aliment.ID_ALIMENT
         ORDER BY manger.DATE DESC
         ");
         $request->execute();
@@ -46,16 +46,16 @@
         }
     }
 
-    function deleteRepasByLogin($login) {
+    function deleteRepasByLogin($login, $id_aliment) {
         global $pdo;
-        $request = $pdo->prepare("delete from manger where LOGIN = $login");
+        $request = $pdo->prepare("DELETE from manger where LOGIN = '$login' AND ID_ALIMENT = '$id_aliment'");
         $result = $request->execute();
         return $result;
     }
 
     function updateRepasByLogin($login, $id_aliment, $quantite) {
         global $pdo;
-        $request = $pdo->prepare("update manger set QUANTITE = '$quantite', ID_ALIMENT = '$id_aliment' where LOGIN = $login");
+        $request = $pdo->prepare("UPDATE manger SET QUANTITE = $quantite, ID_ALIMENT = $id_aliment WHERE LOGIN = '$login'");
         $result = $request->execute();
         return $result;
     }

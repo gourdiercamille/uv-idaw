@@ -53,8 +53,8 @@
                             item.micronutriment_5,
                             item.micronutriment_6,
                             item.calculKcal,
-                            '<button class="btn btn-sm btn-primary edit-btn" data-id="' + item.ID_ALIMENT + '">Modifier</button> ' +
-                            '<button class="btn btn-sm btn-danger delete-btn" data-id="' + item.ID_ALIMENT + '">Supprimer</button>'
+                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '">Modifier</button> ' +
+                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '">Supprimer</button>'
                         ]).draw();
                     });
                 },
@@ -82,11 +82,11 @@
         });
     }
     // Fonction pour modifier un repas via l'API
-    function editUser(date, id_aliment, quantite) {
+    function editRepas(login, id_aliment, quantite) {
         $.ajax({
             url: URL_API, 
             type: 'PUT',
-            data: JSON.stringify({ DATE : date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
+            data: JSON.stringify({ LOGIN: login, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
             dataType: 'json',
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
@@ -130,19 +130,19 @@
         // Modification d'un repas
         $('#myTable tbody').on('click', '.edit-btn', function() {
             var login = $(this).data('login');
-            var id_aliment = prompt('Entrez le nouvel aliment :');
-            var quantité = prompt('Entrez la nouvelle quantité :');
-            editUser(login, id_aliment, quantite);
+            var id_aliment = prompt('Entrez le nouvel id de l\'aliment :');
+            var quantite = prompt('Entrez la nouvelle quantité :');
+            editRepas(login, id_aliment, quantite);
         });
         // Suppression d'un repas
         $('#myTable tbody').on('click', '.delete-btn', function() {
-            console.log($(this).data);
-            var login = $(this).data('login');
-            var id_aliment = $(this).data('id_aliment');
-            if (confirm('Voulez-vous vraiment supprimer ce repas ?')) {
-                deleteRepas(login, id_aliment);
-            }
+        var login = $(this).data('login');
+        var id_aliment = $(this).data('id_aliment');
+        if (confirm('Voulez-vous vraiment supprimer ce repas ?')) {
+            deleteRepas(login, id_aliment);
+        }
         });
+
     });
 </script>
 

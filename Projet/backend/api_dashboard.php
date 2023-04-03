@@ -34,8 +34,8 @@ if ($method == 'POST') {
 
 //delete repas
 if ($method == 'DELETE') {
-    if (isset($_GET['LOGIN'])) {
-        $result = deleteRepasByLogin($_GET['LOGIN']);
+    if (isset($_GET['LOGIN'])&&isset($_GET['ID_ALIMENT'])) {
+        $result = deleteRepasByLogin($_GET['LOGIN'], $_GET['ID_ALIMENT']);
         if ($result) {
             header('HTTP/1.1 204 No Content');
         } else {
@@ -51,7 +51,7 @@ if ($method == 'DELETE') {
 //update repas
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateRepasByLogin($data['login'], $data['quantite'], $data['id_aliment']);
+    $result = updateRepasByLogin($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE']);
     if ($result) {
         echo json_encode(['success' => 'Repas updated successfully']);
     } else {
