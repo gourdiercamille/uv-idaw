@@ -54,9 +54,9 @@
         return $result;
     }
 
-    function updateRepasByLogin($login, $id_aliment, $quantite) {
+    function updateRepasByLogin($login, $id_aliment, $quantite, $date) {
         global $pdo;
-        $request = $pdo->prepare("UPDATE manger SET QUANTITE = $quantite, ID_ALIMENT = $id_aliment WHERE LOGIN = '$login'");
+        $request = $pdo->prepare("UPDATE manger SET QUANTITE = $quantite, ID_ALIMENT = $id_aliment, DATE = $date WHERE LOGIN = '$login'");
         $result = $request->execute();
         return $result;
     }

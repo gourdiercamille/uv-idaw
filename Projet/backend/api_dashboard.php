@@ -1,4 +1,11 @@
 <?php
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 require_once('dashboard.php');
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -51,7 +58,7 @@ if ($method == 'DELETE') {
 //update repas
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateRepasByLogin($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE']);
+    $result = updateRepasByLogin($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
     if ($result) {
         echo json_encode(['success' => 'Repas updated successfully']);
     } else {
