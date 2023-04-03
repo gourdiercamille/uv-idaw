@@ -31,6 +31,25 @@
     </div>
     <button onclick="window.location.href='profil.php'">Voir Profil</button>
 
+    <h2>Ajouter un repas:</h2><br>
+
+    <form id="add-form">
+        <label for="login-input">Login du mangeur:</label>
+        <input type="text" id="login-input" name="login-input"><br>
+
+        <label for="id_aliment-input">ID de l'aliment:</label>
+        <input type="text" id="id_aliment-input" name="id_aliment-input"><br>
+
+        <label for="quantite-input">Quantité:</label>
+        <input type="text" id="quantite-input" name="quantite-input"><br>
+
+        <label for="date-input">Date:</label>
+        <input type="text" id="date-input" name="date-input"><br>
+
+        <button type="submit">Ajouter</button>
+    </form>
+
+
     <script>
         URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";
         // Fonction pour récupérer la liste des repas via l'API
@@ -67,11 +86,11 @@
             });
         }
         // Fonction pour ajouter un repas via l'API
-        function addRepas(date, id_aliment, quantite) {
+        function addRepas(login, date, id_aliment, quantite) {
             $.ajax({
                 url: URL_API, 
                 type: 'POST',
-                data: { DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite },
+                data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on met à jour le tableau des repas
@@ -127,7 +146,8 @@
             var login = $('#login-input').val();
             var id_aliment = $('#id_aliment-input').val();
             var quantite = $('#quantite-input').val();
-            addRepas(date, id_aliment, quantite);
+            var date = $('#date-input').val();
+            addRepas(login, date, id_aliment, quantite);
         });
         // Modification d'un repas
         $('#myTable tbody').on('click', '.edit-btn', function() {

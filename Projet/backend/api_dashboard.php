@@ -22,7 +22,7 @@ if ($method == 'GET') {
 //create repas
 if ($method == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $user = createRepas($data['login'], $data['quantite'], $data['id_aliment']);
+    $repas = createRepas($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
     if ($repas) {
         header('HTTP/1.1 201 Created');
         echo json_encode($repas);

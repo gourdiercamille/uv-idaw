@@ -34,13 +34,14 @@
         return $repas;
     }
 
-    function createRepas($login, $id_aliment, $quantite) {
+    function createRepas($login, $id_aliment, $quantite, $date) {
         global $pdo;
-        $request = $pdo->prepare("insert into manger (LOGIN, ID_ALIMENT, QUANTITE) values ('$login', '$id_aliment', '$quantite')");
+        $request = $pdo->prepare("insert into manger (LOGIN, DATE, ID_ALIMENT, QUANTITE) values ('$login', '$date', '$id_aliment', '$quantite')");
         $result = $request->execute();
         if ($result) {
-            $login = $pdo->lastInsertId();
-            getRepasByLogin($login);
+            // $login = $pdo->lastInsertId();
+            // getRepasByLogin($login);
+            getAllRepas();
         } else {
             return false;
         }
