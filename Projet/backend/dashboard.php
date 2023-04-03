@@ -5,15 +5,15 @@
     function getAllRepas() {
         global $pdo;
         $request = $pdo->prepare("SELECT utilisateur.LOGIN, aliment.ID_ALIMENT, aliment.NOM, manger.QUANTITE, manger.DATE, 
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 1 THEN contenir.RATIO ELSE 0 END) AS micronutriment_1,
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 2 THEN contenir.RATIO ELSE 0 END) AS micronutriment_2,
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 3 THEN contenir.RATIO ELSE 0 END) AS micronutriment_3,
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 4 THEN contenir.RATIO ELSE 0 END) AS micronutriment_4,
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 5 THEN contenir.RATIO ELSE 0 END) AS micronutriment_5,
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 6 THEN contenir.RATIO ELSE 0 END) AS micronutriment_6,
-        9*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 2 THEN contenir.RATIO ELSE 0 END) +
+        (manger.QUANTITE)*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 1 THEN contenir.RATIO ELSE 0 END) AS micronutriment_1,
+        (manger.QUANTITE)*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 2 THEN contenir.RATIO ELSE 0 END) AS micronutriment_2,
+        (manger.QUANTITE)*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 3 THEN contenir.RATIO ELSE 0 END) AS micronutriment_3,
+        (manger.QUANTITE)*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 4 THEN contenir.RATIO ELSE 0 END) AS micronutriment_4,
+        (manger.QUANTITE)*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 5 THEN contenir.RATIO ELSE 0 END) AS micronutriment_5,
+        (manger.QUANTITE)*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 6 THEN contenir.RATIO ELSE 0 END) AS micronutriment_6,
+        (manger.QUANTITE)*(9*MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 2 THEN contenir.RATIO ELSE 0 END) +
         4*(MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 1 THEN contenir.RATIO ELSE 0 END) +
-        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 3 THEN contenir.RATIO ELSE 0 END)) AS calculKcal
+        MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 3 THEN contenir.RATIO ELSE 0 END))) AS calculKcal
         FROM manger
         JOIN contenir ON manger.ID_ALIMENT = contenir.ID_ALIMENT
         JOIN aliment ON manger.ID_ALIMENT = aliment.ID_ALIMENT
