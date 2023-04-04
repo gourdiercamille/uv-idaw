@@ -38,10 +38,8 @@
         global $pdo;
         $request = $pdo->prepare("insert into manger (LOGIN, DATE, ID_ALIMENT, QUANTITE) values ('$login', '$date', '$id_aliment', '$quantite')");
         $result = $request->execute();
-        if ($result) {
-            // $login = $pdo->lastInsertId();
-            // getRepasByLogin($login);
-            getAllRepas();
+        if ($result && $request->rowCount() > 0) {
+            return true;
         } else {
             return false;
         }

@@ -13,9 +13,9 @@ $method = $_SERVER['REQUEST_METHOD'];
 //get repas
 if ($method == 'GET') {
     if (isset($_GET['LOGIN'])) {
-        $$repas = getRepasByLogin($_GET['LOGIN']);
+        $repas = getRepasByLogin($_GET['LOGIN']);
         if ($repas) {
-            echo json_encode($repas);
+            echo json_encode(mb_convert_encoding($repas, "UTF-8"));
         } else {
             header('HTTP/1.1 404 Not Found');
             echo json_encode(['error' => 'Repas not found']);
@@ -29,15 +29,19 @@ if ($method == 'GET') {
 //create repas
 if ($method == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
+    // var_dump($data); // Point de débogage pour afficher les données reçues
     $repas = createRepas($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
+    // var_dump($repas); // Point de débogage pour afficher le résultat de la création de repas
     if ($repas) {
         header('HTTP/1.1 201 Created');
-        echo json_encode($repas);
+        // var_dump($repas);
+        echo json_encode(mb_convert_encoding($repas, "UTF-8"));
     } else {
         header('HTTP/1.1 400 Bad Request');
         echo json_encode(['error' => 'Could not create repas']);
     }
 }
+
 
 //delete repas
 if ($method == 'DELETE') {
