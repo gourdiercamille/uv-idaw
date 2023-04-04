@@ -11,12 +11,12 @@
         <h1>Profil Utilisateur</h1>
         <button onclick="window.location.href='dashboard.php'">Retour</button>
         <script>
-        URL_API = '<?php require_once('config.php'); echo URL_API_PROFIL; ?>';
-
+        URL_API = '<?php require_once('config.php'); echo URL_API; ?>';
+        let login = '<?php echo $_GET['login']; ?>';
         // Fonction pour récupérer les infos de l'utilisateur via l'API
         function getInfos() {
             $.ajax({
-                url: URL_API , 
+                url: URL_API + 'api_profil.php'+ '?LOGIN='+login, 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -55,12 +55,12 @@
         // Fonction pour modifier les infos de l'utilisateur via l'API
         function editUser(login, age, sport, poids, taille) {
             $.ajax({
-                url: URL_API, 
+                url: URL_API + 'api_profil.php', 
                 type: 'PUT',
                 data: JSON.stringify({  login: login, age: age, sport: sport, poids: poids, taille: taille }),
                 dataType: 'json',
                 success: function(response) {
-                    // Si la requête réussit, on récupère les nouvelles donées de l'utilisateur et on les affiche
+                    // Si la requête réussit, on récupère les nouvelles données de l'utilisateur et on les affiche
                     getInfos();
                 },
                 error: function() {

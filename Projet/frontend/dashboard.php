@@ -29,7 +29,11 @@
             <tbody></tbody>
         </table>
     </div>
-    <button onclick="window.location.href='profil.php'">Voir Profil</button>
+
+    <form method="post" action="profil.php">
+      <input type="hidden" name="login" value="<?php echo $_GET['LOGIN']; ?>">
+      <button type="submit">Voir mon profil</button>
+    </form>
 
     <h2>Ajouter un repas:</h2><br>
 
@@ -51,11 +55,11 @@
 
 
     <script>
-        URL_API = "<?php require_once('config.php'); echo URL_API_DASHBOARD ; ?>";
+        URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
             $.ajax({
-                url: URL_API , 
+                url: URL_API + 'api_dashboard.php', 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -88,7 +92,7 @@
         // Fonction pour ajouter un repas via l'API
         function addRepas(login, date, id_aliment, quantite) {
             $.ajax({
-                url: URL_API, 
+                url: URL_API + 'api_dashboard.php', 
                 type: 'POST',
                 data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
                 dataType: 'json',
@@ -105,7 +109,7 @@
     // Fonction pour modifier un repas via l'API
     function editRepas(date, id_aliment, quantite) {
         $.ajax({
-            url: URL_API, 
+            url: URL_API + 'api_dashboard.php', 
             type: 'PUT',
             data: JSON.stringify({ DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
             dataType: 'json',
@@ -122,7 +126,7 @@
     // Fonction pour supprimer un repas via l'API
     function deleteRepas(login, id_aliment) {
         $.ajax({
-            url: URL_API + '?LOGIN=' + login + '&ID_ALIMENT=' + id_aliment, // URL de l'API avec le login de l'utilisateur et l'id de l'aliment à supprimer
+            url: URL_API + 'api_dashboard.php' + '?LOGIN=' + login + '&ID_ALIMENT=' + id_aliment, // URL de l'API avec le login de l'utilisateur et l'id de l'aliment à supprimer
             type: 'DELETE',
             dataType: 'json',
             success: function(response) {
@@ -168,18 +172,17 @@
 
     });
 
-    function toggleForm() {
-        var form_edit = document.getElementById("edit-repas-form");
-        var form_add = document.getElementById("add-aliment-form");
-        if (form_edit.style.display === "none") {
-            form_edit.style.display = "block";
+    function toggleForm(form) {
+        var form = document.getElementById(form);
+        if (form.style.display === "none") {
+            form.style.display = "block";
         } else {
-            form_edit.style.display = "none";
+            form.style.display = "none";
         }
     }
 </script>
         <!--Form d'ajout d'un aliment-->
-        <button class="btn-add" onclick="toggleForm()">Ajouter un Aliment</button>
+        <button class="btn-add" onclick="toggleForm('add-aliment-form')">Ajouter un Aliment</button>
         <form id="add-aliment-form" method="POST" style="display:none;">
             <fieldset>
                 <legend>Ajouter un Aliment</legend>
@@ -208,7 +211,7 @@
                     <td><input type="float" id="quanVitamines" name="quanVitamines" value=""></td>
                 </tr><tr>
                     <th></th>
-                    <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm()"/></td>
+                    <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
                 </tr>
             </table>
         </form>
@@ -230,7 +233,7 @@
                     <td><input type="float" id="editQuantite" name="editQuantite" value=""></td>
                 </tr><tr>
                     <th></th>
-                    <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm()"/></td>
+                    <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm('edit_repas_form')"/></td>
                 </tr>
             </table>
         </form>
