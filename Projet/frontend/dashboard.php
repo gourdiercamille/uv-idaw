@@ -149,18 +149,52 @@
     });
 
     function toggleForm() {
-        var form = document.getElementById("edit_form");
-        if (form.style.display === "none") {
-            form.style.display = "block";
+        var form_edit = document.getElementById("edit-repas-form");
+        var form_add = document.getElementById("add-aliment-form");
+        if (form_edit.style.display === "none") {
+            form_edit.style.display = "block";
         } else {
-            form.style.display = "none";
+            form_edit.style.display = "none";
         }
     }
 </script>
-
+        <!--Form d'ajout d'un aliment-->
         <button class="btn-add" onclick="toggleForm()">Ajouter un Aliment</button>
-        
-        <form id="edit_repas_form" method="POST" style="display:none;">
+        <form id="add-aliment-form" method="POST" style="display:none;">
+            <fieldset>
+                <legend>Ajouter un Aliment</legend>
+            </fieldset>
+            <table>
+                <tr>
+                    <th>Libellé :</th>
+                    <td><input type="text" id="addAliment" name="addAliment" value=""></td>
+                </tr><tr>
+                    <th>Quantité de Lipide :</th>
+                    <td><input type="float" id="quanLipide" name="quanLipide" value=""></td>
+                </tr><tr>
+                    <th>Quantité de Glucide :</th>
+                    <td><input type="float" id="quanGlucide" name="quanGlucide" value=""></td>
+                </tr><tr>
+                    <th>Quantité de Protéine :</th>
+                    <td><input type="float" id="quanProteine" name="quanProteine" value=""></td>
+                </tr><tr>
+                    <th>Quantité de Fibre :</th>
+                    <td><input type="float" id="quanFibre" name="quanFibre" value=""></td>
+                </tr><tr>
+                    <th>Quantité de Sel :</th>
+                    <td><input type="float" id="quanSel" name="quanSel" value=""></td>
+                </tr><tr>
+                    <th>Quantité de Vitamines :</th>
+                    <td><input type="float" id="quanVitamines" name="quanVitamines" value=""></td>
+                </tr><tr>
+                    <th></th>
+                    <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm()"/></td>
+                </tr>
+            </table>
+        </form>
+
+        <!--Form de modif d'un repas-->
+        <form id="edit_repas_form" method="PUT" style="display:none;">
             <fieldset>
                 <legend>Modifier un repas</legend>
             </fieldset>
@@ -173,7 +207,7 @@
                     <td><input type="text" id="editRepas" name="editRepas" value=""></td>
                 </tr><tr>
                     <th>Quantité :</th>
-                    <td><input type="email" id="editQuantite" name="editQuantite" value=""></td>
+                    <td><input type="float" id="editQuantite" name="editQuantite" value=""></td>
                 </tr><tr>
                     <th></th>
                     <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm()"/></td>
