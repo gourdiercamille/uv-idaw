@@ -108,7 +108,7 @@
         $.ajax({
             url: URL_API + 'api_dashboard.php', 
             type: 'PUT',
-            data: JSON.stringify({ DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
+            data: JSON.stringify({ DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite, LOGIN: login }),
             dataType: 'json',
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
