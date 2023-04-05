@@ -22,7 +22,7 @@ if ($method == 'GET') {
         }
     }
     else {
-        header('HTTP/1.1 404 Not Found');
-        echo json_encode(['error' => 'User not found']);
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(['error' => 'Missing login parameter']);
     }
 }

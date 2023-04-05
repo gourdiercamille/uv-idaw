@@ -4,6 +4,7 @@
     <title>Connexion</title>
     <meta charset="utf8">
     <link rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <h1> Connexion </h1>
@@ -19,9 +20,8 @@
 
     function verifLogin(login) {
             $.ajax({
-                url: URL_API + 'authentification.php', 
+                url: URL_API + 'api_authentification.php?login=' + login , 
                 type: 'GET',
-                data: JSON.stringify({ LOGIN: login}),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on redirige vers le dashboard
