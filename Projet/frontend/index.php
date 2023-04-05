@@ -10,7 +10,7 @@
     <div>
         <h3> Entrez votre login : </h3>
         <form id="connect-form">
-            <input type="text" name="login-input" id="login">
+            <input type="text" name="login" id="login-input">
             <input type="submit" value="Valider">
         </form>
     </div>
@@ -20,7 +20,7 @@
     function verifLogin(login) {
             $.ajax({
                 url: URL_API + 'authentification.php', 
-                type: 'POST',
+                type: 'GET',
                 data: JSON.stringify({ LOGIN: login}),
                 dataType: 'json',
                 success: function(response) {
@@ -29,7 +29,7 @@
                 },
                 error: function() {
                     // Si la requête échoue,
-                    alert('Erreur lors de l\'ajout du repas');
+                    alert('Login incorrect');
             }
         });
     }

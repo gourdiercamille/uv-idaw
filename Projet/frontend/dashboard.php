@@ -30,7 +30,7 @@
         </table>
     </div>
 
-    <button type="submit">Voir mon profil</button>
+    <button onclick="window.location.href = 'profil.php?login=' + login">Voir mon profil</button>
 
     <h2>Ajouter un repas:</h2><br>
 

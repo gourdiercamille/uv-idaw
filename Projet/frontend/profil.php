@@ -24,11 +24,11 @@
                     var infos = {
                         nom : user.NOM,
                         prenom : user.PRENOM,
-                        age : user.age,
-                        sexe : user.sexe,
+                        age : user.ID_TRANCHE_AGE,
+                        sexe : user.ID_SEXE,
                         taille : user.TAILLE,
                         poids : user.POIDS,
-                        sport : user.sport,
+                        sport : user.ID_SPORT,
                     };
                     showUserInfos(infos);
                 },

@@ -11,13 +11,17 @@ require_once('authentification.php');
 $method = $_SERVER['REQUEST_METHOD'];
 
 //get user
-if ($method == 'POST') {
-    // Vérification du login dans la base de données
+if ($method == 'GET') {
     if (isset($_GET['login'])) {
         $login = $_GET['login'];
-        checkLogin($login);
-        echo json_encode(['success' => 'User is connected']);
-    } else {
+        if (checkLogin($login)){
+            echo json_encode(['success' => 'User is connected']);
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'User not found']);
+        }
+    }
+    else {
         header('HTTP/1.1 404 Not Found');
         echo json_encode(['error' => 'User not found']);
     }

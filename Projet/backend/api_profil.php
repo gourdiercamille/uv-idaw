@@ -15,10 +15,15 @@ if ($method == 'GET') {
     if (isset($_GET['login'])) {
         $user = getUserByLogin($_GET['login']);
         if ($user) {
+            $age = getInfosUser($_GET['login'], 'age');
+            $sexe = getInfosUser($_GET['login'], 'sexe');
+            $sport = getInfosUser($_GET['login'], 'sport');
+            
+            $user['ID_TRANCHE_AGE'] = $age;
+            $user['ID_SEXE'] = $sexe;
+            $user['ID_SPORT'] = $sport;
+            
             echo json_encode($user);
-            $age=getInfosUser($_GET['login'],'age');
-            $sexe=getInfosUser($_GET['login'],'sexe');
-            $sport=getInfosUser($_GET['login'],'sport');
         } else {
             header('HTTP/1.1 404 Not Found');
             echo json_encode(['error' => 'User not found']);
