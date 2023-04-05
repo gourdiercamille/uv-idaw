@@ -30,10 +30,7 @@
         </table>
     </div>
 
-    <form method="post" action="profil.php">
-      <input type="hidden" name="login" value="<?php echo $_GET['LOGIN']; ?>">
-      <button type="submit">Voir mon profil</button>
-    </form>
+    <button type="submit">Voir mon profil</button>
 
     <h2>Ajouter un repas:</h2><br>
 
