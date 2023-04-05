@@ -1,7 +1,26 @@
 <?php
-    define('_MYSQL_HOST','127.0.0.1'); //same for both
-    define('_MYSQL_PORT',8889); //for cam: 3306 for ben: 8889
-    define('_MYSQL_DBNAME','projet_idaw'); //same for both
-    define('_MYSQL_USER','root'); //same for both
-    define('_MYSQL_PASSWORD','root');  //for cam: '' for ben 'root'
+    if($_ENV['SERVER_NAME']='io') {
+        // nom de la machine prof
+        define('_MYSQL_HOST','mysql');
+        define('_MYSQL_PORT',3306);
+        define('_MYSQL_DBNAME','FABRESSE-Luc');
+        define('_MYSQL_USER','root');
+        define('_MYSQL_PASSWORD','root');
+    }
+        else if($_ENV['USERNAME']='ORDI_CAMILLE$ ') {
+        // param de la machine cam
+            define('_MYSQL_HOST','127.0.0.1');
+            define('_MYSQL_PORT',);
+            define('_MYSQL_DBNAME','projet_idaw');
+            define('_MYSQL_USER','root');
+            define('_MYSQL_PASSWORD','');
+        }
+        else{
+        // param de la machine ben
+            define('_MYSQL_HOST','127.0.0.1'); 
+            define('_MYSQL_PORT',8889); 
+            define('_MYSQL_DBNAME','projet_idaw');
+            define('_MYSQL_USER','root');
+            define('_MYSQL_PASSWORD','root'); 
+        }
 ?>

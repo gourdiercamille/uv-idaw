@@ -5,19 +5,17 @@
     <meta charset="utf8">
     <link rel="stylesheet">
 </head>
-<body>
+<body onload="setFormAction()">
     <h1> Connexion </h1>
     <div>
         <h3> Entrez votre login : </h3>
-        <script>
-        URL = "<?php require_once('config.php'); echo URL_API ; ?>" + "authentification.php";
-        var form = document.getElementById("myForm");
-        form.action = URL ;
-        </script>
-        <form method='GET' id="myForm">
+        <form method='GET' >
             <input type="text" name="LOGIN" id="LOGIN">
             <input type="submit" value="Valider">
         </form>
     </div>
+    <script>
+        
+    </script>
 </body>
 </html>

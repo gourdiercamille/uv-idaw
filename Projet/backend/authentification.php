@@ -12,7 +12,7 @@ if (isset($_GET['login'])) {
     if ($result && $request->rowCount() > 0) {
         // Login trouvé, démarrer la session et rediriger vers le dashboard
         session_start();
-        $_SESSION['login'] = $login;
+        $_SESSION['LOGIN'] = $login;
         header('Location: ../frontend/dashboard.php');
     } else {
         // Login non trouvé, afficher un message d'erreur
