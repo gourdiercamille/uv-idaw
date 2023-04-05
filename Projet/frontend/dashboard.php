@@ -52,7 +52,7 @@
 
 
     <script>
-        URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";
+
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
             $.ajax({
