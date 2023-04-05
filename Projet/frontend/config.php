@@ -13,10 +13,5 @@
         // param de la machine cam
         define('URL_API','http://localhost/IDAW_PROJET/Projet/backend/');
     }
-    
-<<<<<<< HEAD
-    //for cam
-    define('URL_API','http://localhost/IDAW_PROJET/Projet/backend/');
-=======
->>>>>>> 7bedb7064574b29be982c57c50467ca28e08f0e1
+?>
     
