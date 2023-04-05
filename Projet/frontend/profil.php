@@ -9,14 +9,28 @@
     </header>
     <body>
         <h1>Profil Utilisateur</h1>
-        <button onclick="window.location.href='dashboard.php'">Retour</button>
         <script>
         URL_API = '<?php require_once('config.php'); echo URL_API; ?>';
         let login = '<?php echo $_GET['login']; ?>';
+
+        // Fonction pour afficher les infos de l'utilisateur
+        function showUserInfos(user) {
+            $("ul").html(
+                "<li>Nom : " + user.nom + "</li>" +
+                "<li>Prénom : " + user.prenom + "</li>" +
+                "<li>Tranche d'âge : " + user.age + "</li>" +
+                "<li>Sexe : " + user.sexe + "</li>" +
+                "<li>Taille : " + user.taille + "</li>" +
+                "<li>Poids : " + user.poids + "</li>" +
+                "<li>Sport : " + user.sport + "</li>"
+            );
+        }
+
+
         // Fonction pour récupérer les infos de l'utilisateur via l'API
         function getInfos() {
             $.ajax({
-                url: URL_API + 'api_profil.php'+ '?LOGIN='+login, 
+                url: URL_API + 'api_profil.php'+ '?login='+login, 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -37,19 +51,6 @@
                     alert('Erreur lors de la récupération des informations');
                 }
             });
-        }
-
-        // Fonction pour afficher les infos de l'utilisateur
-        function showUserInfos(user) {
-            $("ul").html(
-                "<li>Nom : " + user.nom + "</li>" +
-                "<li>Prénom : " + user.prenom + "</li>" +
-                "<li>Tranche d'âge : " + user.age + "</li>" +
-                "<li>Sexe : " + user.sexe + "</li>" +
-                "<li>Taille : " + user.taille + "</li>" +
-                "<li>Poids : " + user.poids + "</li>" +
-                "<li>Sport : " + user.sport + "</li>"
-            );
         }
 
         // Fonction pour modifier les infos de l'utilisateur via l'API
@@ -96,6 +97,7 @@
         }
 
         </script>
+        <button onclick="window.location.href='dashboard.php?login='+ login">Retour</button>
         <div>
             <h3> Informations </h3>
                 <button class="btn-edit" onclick="toggleForm()">Edit</button>

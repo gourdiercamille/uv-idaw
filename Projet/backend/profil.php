@@ -9,7 +9,7 @@
 
         function getUserByLogin($login) {
             global $pdo;
-            $request = $pdo->prepare("select * from utilisateur where LOGIN = $login");
+            $request = $pdo->prepare("select * from utilisateur where LOGIN = '$login'");
             $request->execute();
             $user = $request->fetch(PDO::FETCH_ASSOC);
             return $user;
@@ -31,7 +31,7 @@
                 $request = $pdo->prepare("select LIBELLE from sexe where ID_SEXE = " . $user['ID_SEXE']);
                 $request->execute();
                 $sexe = $request->fetch(PDO::FETCH_ASSOC);
-                return $age_min . ' - ' . $age_max;
+                return $sexe;
             }
             if ($categorie == 'sport') {
                 $request = $pdo->prepare("select LIBELLE from intensite_sport where ID_SPORT = " . $user['ID_SPORT']);

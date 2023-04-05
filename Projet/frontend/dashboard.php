@@ -30,6 +30,7 @@
         </table>
     </div>
 
+    <script>let login = '<?php echo $_GET['login']; ?>';</script>
     <button onclick="window.location.href = 'profil.php?login=' + login">Voir mon profil</button>
 
     <h2>Ajouter un repas:</h2><br>

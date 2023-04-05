@@ -22,7 +22,7 @@ if ($method == 'GET') {
             $user['ID_TRANCHE_AGE'] = $age;
             $user['ID_SEXE'] = $sexe;
             $user['ID_SPORT'] = $sport;
-            
+            echo $user;
             echo json_encode($user);
         } else {
             header('HTTP/1.1 404 Not Found');
