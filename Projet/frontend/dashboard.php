@@ -50,8 +50,9 @@
         <button type="submit">Ajouter</button>
     </form>
 
-
     <script>
+
+        URL_API = "<?php require_once('config.php'); echo URL_API ; ?>";
 
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
@@ -178,6 +179,40 @@
             form.style.display = "none";
         }
     }
+
+    function menuDeroulantRepas() {
+        $.ajax({
+                url: URL_API + 'api_dashboard.php', 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Si la requête réussit, on met à jour le tableau des repas
+                    var table = $('#myTable').DataTable();
+                    table.clear();
+                    $.each(response, function(i, item) {
+                        table.row.add([
+                            item.DATE,
+                            item.NOM,
+                            item.QUANTITE,
+                            item.micronutriment_1,
+                            item.micronutriment_2,
+                            item.micronutriment_3,
+                            item.micronutriment_4,
+                            item.micronutriment_5,
+                            item.micronutriment_6,
+                            item.calculKcal,
+                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm()">Modifier</button> ' +
+                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
+                        ]).draw();
+                    });
+                },
+                error: function() {
+                    // Si la requête échoue, on affiche une erreur
+                    alert('Erreur lors de la récupération des repas');
+                }
+        });
+    }
+
 </script>
         <!--Form d'ajout d'un aliment-->
         <button class="btn-add" onclick="toggleForm('add-aliment-form')">Ajouter un Aliment</button>
