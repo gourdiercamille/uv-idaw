@@ -7,15 +7,17 @@
         define('_MYSQL_USER','root');
         define('_MYSQL_PASSWORD','root');
     }
-        else if($_ENV['USERNAME']='ORDI_CAMILLE$ ') {
+    
+    if($_ENV['USERNAME']='ORDI_CAMILLE$ ') {
         // param de la machine cam
             define('_MYSQL_HOST','127.0.0.1');
-            define('_MYSQL_PORT',);
+            define('_MYSQL_PORT', 3306);
             define('_MYSQL_DBNAME','projet_idaw');
             define('_MYSQL_USER','root');
             define('_MYSQL_PASSWORD','');
         }
-        else{
+    
+    if($_ENV['DOCUMENT_ROOT']= '/Applications/MAMP/htdocs') {
         // param de la machine ben
             define('_MYSQL_HOST','127.0.0.1'); 
             define('_MYSQL_PORT',8889); 
