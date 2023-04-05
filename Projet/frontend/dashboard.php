@@ -154,7 +154,8 @@
             addRepas(login, date, id_aliment, quantite);
         });
         // Modification d'un repas
-        $('#myTable tbody').on('click', '.edit-btn', function() {
+        $('#myTable tbody').on('click', '.edit-btn', function(e) {
+            e.preventDefault();
             var login = $(this).data('login');
             var date = $('#editDate').val();
             var id_aliment = $('#editRepas').val();;
