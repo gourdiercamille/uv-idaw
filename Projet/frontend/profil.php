@@ -9,23 +9,11 @@
     </header>
     <body>
         <h1>Profil Utilisateur</h1>
+        <h3> Informations </h3>
+        <button onclick="window.location.href='dashboard.php?login='+ login">Retour</button>
         <script>
         URL_API = '<?php require_once('config.php'); echo URL_API; ?>';
         let login = '<?php echo $_GET['login']; ?>';
-
-        // Fonction pour afficher les infos de l'utilisateur
-        function showUserInfos(user) {
-            $("ul").html(
-                "<li>Nom : " + user.nom + "</li>" +
-                "<li>Prénom : " + user.prenom + "</li>" +
-                "<li>Tranche d'âge : " + user.age + "</li>" +
-                "<li>Sexe : " + user.sexe + "</li>" +
-                "<li>Taille : " + user.taille + "</li>" +
-                "<li>Poids : " + user.poids + "</li>" +
-                "<li>Sport : " + user.sport + "</li>"
-            );
-        }
-
 
         // Fonction pour récupérer les infos de l'utilisateur via l'API
         function getInfos() {
@@ -34,7 +22,9 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    var user = JSON.parse(response);
+                    console.log(response);
+                    var user = response;
+                    console.log(user);
                     var infos = {
                         nom : user.NOM,
                         prenom : user.PRENOM,
@@ -44,6 +34,8 @@
                         poids : user.POIDS,
                         sport : user.ID_SPORT,
                     };
+                    console.log(infos);
+                    console.log(infos.nom);
                     showUserInfos(infos);
                 },
                 error: function() {
@@ -51,6 +43,21 @@
                     alert('Erreur lors de la récupération des informations');
                 }
             });
+        }
+
+        // Fonction pour afficher les infos de l'utilisateur
+        function showUserInfos(user) {
+            $("ul").html(
+                </script>
+                <li>Nom : user.NOM  </li>
+                <li>Prénom :   user.PRENOM  </li>
+                <li>Tranche d'âge : user.ID_TRANCHE_AGE </li>
+                <li>Sexe :  user.ID_SEXE </li>
+                <li>Taille : user.TAILLE  cm</li>
+                <li>Poids :  user.POIDS  kg</li>
+                <li>Intensité Sportive Pratiquée :  user.ID_SPORT </li>
+                <script>
+            );
         }
 
         // Fonction pour modifier les infos de l'utilisateur via l'API
@@ -86,7 +93,8 @@
                 getInfos();
             });
         });
-
+        
+        
         function toggleForm() {
                 var form = document.getElementById("edit_form");
                 if (form.style.display === "none") {
@@ -97,9 +105,7 @@
         }
 
         </script>
-        <button onclick="window.location.href='dashboard.php?login='+ login">Retour</button>
         <div>
-            <h3> Informations </h3>
                 <button class="btn-edit" onclick="toggleForm()">Edit</button>
                 <form id="edit_form" method="POST" style="display:none;">
                     <table>

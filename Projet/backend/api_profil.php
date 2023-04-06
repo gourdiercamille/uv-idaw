@@ -22,7 +22,6 @@ if ($method == 'GET') {
             $user['ID_TRANCHE_AGE'] = $age;
             $user['ID_SEXE'] = $sexe;
             $user['ID_SPORT'] = $sport;
-            echo $user;
             echo json_encode($user);
         } else {
             header('HTTP/1.1 404 Not Found');
@@ -35,14 +34,30 @@ if ($method == 'GET') {
 }
 
 //update user
+// if ($method == 'PUT') {
+//     $data = json_decode(file_get_contents('php://input'), true);
+//     $result = updateUserByLogin($data['LOGIN'], $data['ID_TRANCHE_AGE'], $data['ID_SPORT'], $data['POIDS'], $data['TAILLE']);
+//     if ($result) {
+//         echo json_encode(['success' => 'User updated successfully']);
+//     } else {
+//         header('HTTP/1.1 404 Not Found');
+//         echo json_encode(['error' => 'User not found']);
+//     }
+// }
+
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateUserByLogin($data['LOGIN'], $data['ID_TRANCHE_AGE'], $data['ID_SPORT'], $data['POIDS'], $data['TAILLE']);
-    if ($result) {
-        echo json_encode(['success' => 'User updated successfully']);
+    if ($data && json_last_error() === JSON_ERROR_NONE) {
+        $result = updateUserByLogin($data['LOGIN'], $data['ID_TRANCHE_AGE'], $data['ID_SPORT'], $data['POIDS'], $data['TAILLE']);
+        if ($result) {
+            echo json_encode(['success' => 'User updated successfully']);
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'User not found']);
+        }
     } else {
-        header('HTTP/1.1 404 Not Found');
-        echo json_encode(['error' => 'User not found']);
+        header('HTTP/1.1 400 Bad Request');
+        echo json_encode(['error' => 'Invalid JSON data']);
     }
 }
 
