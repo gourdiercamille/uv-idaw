@@ -60,14 +60,12 @@
         </table>
     </div>
 
-    <script>let login = '<?php echo $_GET['LOGIN']; ?>';</script>
+    <script>let login = '<?php echo $_GET['login']; ?>';</script>
     <button onclick="window.location.href = 'profil.php?login=' + login">Voir mon profil</button>
 
     <h2>Ajouter un repas:</h2><br>
 
     <form id="add-form">
-        <label for="login-input">Login du mangeur:</label>
-        <input type="text" id="login-input" name="login-input"><br>
 
         <div id="menu-deroulant-repas"></div>
 
@@ -75,7 +73,7 @@
         <input type="text" id="quantite-input" name="quantite-input"><br>
 
         <label for="date-input">Date:</label>
-        <input type="text" id="date-input" name="date-input"><br>
+        <input type="date" id="date-input" name="date-input"><br>
 
         <button type="submit">Ajouter</button>
     </form>
@@ -106,7 +104,40 @@
                             item.micronutriment_5,
                             item.micronutriment_6,
                             item.calculKcal,
-                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm()">Modifier</button> ' +
+                            // '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm("edit_repas_form")">Modifier</button> ' +
+                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
+                        ]).draw();
+                    });
+                },
+                error: function() {
+                    // Si la requête échoue, on affiche une erreur
+                    alert('Erreur lors de la récupération des repas');
+                }
+            });
+        }
+
+        function getRepasByLogin(login) {
+            $.ajax({
+                url: URL_API + 'api_dashboard.php?LOGIN=' + login, 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Si la requête réussit, on met à jour le tableau des repas
+                    var table = $('#myTable').DataTable();
+                    table.clear();
+                    $.each(response, function(i, item) {
+                        table.row.add([
+                            item.DATE,
+                            item.NOM,
+                            item.QUANTITE,
+                            item.micronutriment_1,
+                            item.micronutriment_2,
+                            item.micronutriment_3,
+                            item.micronutriment_4,
+                            item.micronutriment_5,
+                            item.micronutriment_6,
+                            item.calculKcal,
+                            // '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm("edit_repas_form")">Modifier</button> ' +
                             '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
                         ]).draw();
                     });
@@ -120,13 +151,13 @@
         // Fonction pour ajouter un repas via l'API
         function addRepas(login, date, id_aliment, quantite, nom_aliment) {
             $.ajax({
-                url: URL_API + 'api_dashboard.php', 
+                url: URL_API + 'api_dashboard.php?login=' + login, 
                 type: 'POST',
                 data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite, NOM: nom_aliment }),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on met à jour le tableau des repas
-                    getRepas();
+                    getRepasByLogin(login);
                 },
                 error: function() {
                     // Si la requête échoue,
@@ -135,11 +166,11 @@
         });
     }
     // Fonction pour modifier un repas via l'API
-    function editRepas(date, id_aliment, quantite) {
+    function editRepas(login, date, id_aliment, quantite) {
         $.ajax({
             url: URL_API + 'api_dashboard.php', 
             type: 'PUT',
-            data: JSON.stringify({ DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite, LOGIN: login }),
+            data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
             dataType: 'json',
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
@@ -159,7 +190,7 @@
             dataType: 'json',
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
-                getRepas();
+                getRepasByLogin(login);
             },
             error: function() {
                 // Si la requête échoue, on affiche une erreur
@@ -167,20 +198,26 @@
             }
         });
     }
+
     $(document).ready(function() {
         // Initialisation du tableau DataTable
         $('#myTable').DataTable();
         // Récupération de la liste des repas au chargement de la page
-        getRepas();
+        var login = '<?php $login = isset($_GET['login']) ? $_GET['login'] : 'null'; echo htmlspecialchars($login, ENT_QUOTES, 'UTF-8'); ?>';
+        if (login != 'null') {
+            getRepasByLogin(login);
+        }
+        else {
+            getRepas();
+        }
         // Ajout d'un repas
         $('#add-form').submit(function(e) {
             e.preventDefault();
-            var login = $('#login-input').val();
+            var login = '<?php $login = isset($_GET['login']) ? $_GET['login'] : 'null'; echo htmlspecialchars($login, ENT_QUOTES, 'UTF-8'); ?>';
             var quantite = $('#quantite-input').val();
             var date = $('#date-input').val();
             var id_aliment = $(this).find('option:selected').data('id-aliment'); // Obtenir la valeur de data-id-aliment de l'option sélectionnée
             var nom_aliment = $(this).find('option:selected').data('nom-aliment');
-            console.log(login, date, quantite, id_aliment, nom_aliment);
             addRepas(login, date, id_aliment, quantite, nom_aliment);
         });
         // Modification d'un repas
@@ -267,15 +304,7 @@
                     <td><input type="float" id="editQuantite" name="editQuantite" value=""></td>
                 </tr><tr>
                     <th></th>
-                    <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm('edit_repas_form')"/></td>
+                    <td><input type="submit" name="edit" value="Valider les Modifications"/></td> <!--onclick="toggleForm('edit_repas_form')"-->
                 </tr>
             </table>
         </form>
-
-
-
-
-</body>
-</html>
-
-
