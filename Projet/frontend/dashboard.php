@@ -23,6 +23,8 @@
                         var option = document.createElement("option");
                         option.value = item.NOM;
                         option.text = item.NOM;
+                        option.setAttribute('data-id-aliment', item.ID_ALIMENT); // Stocker l'ID_ALIMENT comme attribut data
+                        option.setAttribute('data-nom-aliment', item.NOM);
                         select.add(option);
                     });
                     document.getElementById("menu-deroulant-repas").appendChild(select);
@@ -58,7 +60,7 @@
         </table>
     </div>
 
-    <script>let login = '<?php echo $_GET['login']; ?>';</script>
+    <script>let login = '<?php echo $_GET['LOGIN']; ?>';</script>
     <button onclick="window.location.href = 'profil.php?login=' + login">Voir mon profil</button>
 
     <h2>Ajouter un repas:</h2><br>
@@ -116,11 +118,11 @@
             });
         }
         // Fonction pour ajouter un repas via l'API
-        function addRepas(login, date, nom_aliment, quantite) {
+        function addRepas(login, date, id_aliment, quantite, nom_aliment) {
             $.ajax({
                 url: URL_API + 'api_dashboard.php', 
                 type: 'POST',
-                data: JSON.stringify({ LOGIN: login, DATE: date, NOM_ALIMENT: nom_aliment, QUANTITE: quantite }),
+                data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite, NOM: nom_aliment }),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on met à jour le tableau des repas
@@ -174,10 +176,12 @@
         $('#add-form').submit(function(e) {
             e.preventDefault();
             var login = $('#login-input').val();
-            var nom_aliment = $('#nom_aliment-input').val();
             var quantite = $('#quantite-input').val();
             var date = $('#date-input').val();
-            addRepas(login, date, nom_aliment, quantite);
+            var id_aliment = $(this).find('option:selected').data('id-aliment'); // Obtenir la valeur de data-id-aliment de l'option sélectionnée
+            var nom_aliment = $(this).find('option:selected').data('nom-aliment');
+            console.log(login, date, quantite, id_aliment, nom_aliment);
+            addRepas(login, date, id_aliment, quantite, nom_aliment);
         });
         // Modification d'un repas
         $('#myTable tbody').on('click', '.edit-btn', function(e) {

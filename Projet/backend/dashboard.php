@@ -34,7 +34,7 @@
         return $repas;
     }
 
-    function createRepas($login, $id_aliment, $quantite, $date) {
+    function createRepas($login, $id_aliment, $quantite, $date, $nom_aliment) {
         global $pdo;
         $request = $pdo->prepare("insert into manger (LOGIN, DATE, ID_ALIMENT, QUANTITE) values ('$login', '$date', '$id_aliment', '$quantite')");
         $result = $request->execute();
@@ -61,7 +61,7 @@
 
     function getAllNameAliment() {
         global $pdo;
-        $request = $pdo->prepare("SELECT aliment.NOM
+        $request = $pdo->prepare("SELECT aliment.NOM, aliment.ID_ALIMENT
         FROM aliment
         ORDER BY aliment.NOM ASC
         ");
