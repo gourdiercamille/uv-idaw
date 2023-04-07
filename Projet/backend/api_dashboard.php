@@ -12,7 +12,17 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 //get repas
 if ($method == 'GET') {
-    if (isset($_GET['LOGIN'])) {
+    if (isset($_GET['menuDeroulant'])) {
+        $repasMenu = getAllNameAliment();
+        if ($repasMenu) {
+            echo json_encode(mb_convert_encoding($repasMenu, "UTF-8"));
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'Repas not found']);
+        }
+    }
+
+    if (isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu') {
         $repas = getRepasByLogin($_GET['LOGIN']);
         if ($repas) {
             echo json_encode(mb_convert_encoding($repas, "UTF-8"));
@@ -20,9 +30,11 @@ if ($method == 'GET') {
             header('HTTP/1.1 404 Not Found');
             echo json_encode(['error' => 'Repas not found']);
         }
-    } else {
-        $repas = getAllRepas();
-        echo json_encode(mb_convert_encoding($repas, "UTF-8"));
+    }
+    
+    if (isset($_GET['LOGIN']) && $_GET['LOGIN'] == 'menu') {
+            $repas = getAllRepas();
+            echo json_encode(mb_convert_encoding($repas, "UTF-8"));
     }
 }
 
@@ -30,7 +42,7 @@ if ($method == 'GET') {
 if ($method == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     // var_dump($data); // Point de débogage pour afficher les données reçues
-    $repas = createRepas($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
+    $repas = createRepas($data['LOGIN'], $data['NOM_ALIMENT'], $data['QUANTITE'], $data['DATE']);
     // var_dump($repas); // Point de débogage pour afficher le résultat de la création de repas
     if ($repas) {
         header('HTTP/1.1 201 Created');
@@ -70,5 +82,3 @@ if ($method == 'PUT') {
         echo json_encode(['error' => 'Repas not found']);
     }
 }
-
-?>

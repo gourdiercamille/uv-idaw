@@ -6,6 +6,34 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>function menuDeroulantRepas() {
+            $.ajax({
+                url: URL_API + 'api_dashboard.php?menuDeroulant=1',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var select = document.createElement("select");
+                    select.id = "nom_aliment-input";
+                    select.name = "nom_aliment-input";
+                    var option = document.createElement("option");
+                    option.value = "";
+                    option.text = "Sélectionnez un repas";
+                    select.add(option);
+                    response.forEach(function(item) {
+                        var option = document.createElement("option");
+                        option.value = item.NOM;
+                        option.text = item.NOM;
+                        select.add(option);
+                    });
+                    document.getElementById("menu-deroulant-repas").appendChild(select);
+                },
+                error: function() {
+                    // Si la requête échoue, on affiche une erreur
+                    alert('Erreur lors de la récupération des repas');
+                }
+            });
+    }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -38,8 +66,7 @@
         <label for="login-input">Login du mangeur:</label>
         <input type="text" id="login-input" name="login-input"><br>
 
-        <label for="id_aliment-input">ID de l'aliment:</label>
-        <input type="text" id="id_aliment-input" name="id_aliment-input"><br>
+        <div id="menu-deroulant-repas"></div>
 
         <label for="quantite-input">Quantité:</label>
         <input type="text" id="quantite-input" name="quantite-input"><br>
@@ -57,7 +84,7 @@
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
             $.ajax({
-                url: URL_API + 'api_dashboard.php', 
+                url: URL_API + 'api_dashboard.php?LOGIN=menu', 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -88,11 +115,11 @@
             });
         }
         // Fonction pour ajouter un repas via l'API
-        function addRepas(login, date, id_aliment, quantite) {
+        function addRepas(login, date, nom_aliment, quantite) {
             $.ajax({
                 url: URL_API + 'api_dashboard.php', 
                 type: 'POST',
-                data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
+                data: JSON.stringify({ LOGIN: login, DATE: date, NOM_ALIMENT: nom_aliment, QUANTITE: quantite }),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on met à jour le tableau des repas
@@ -146,10 +173,10 @@
         $('#add-form').submit(function(e) {
             e.preventDefault();
             var login = $('#login-input').val();
-            var id_aliment = $('#id_aliment-input').val();
+            var nom_aliment = $('#nom_aliment-input').val();
             var quantite = $('#quantite-input').val();
             var date = $('#date-input').val();
-            addRepas(login, date, id_aliment, quantite);
+            addRepas(login, date, nom_aliment, quantite);
         });
         // Modification d'un repas
         $('#myTable tbody').on('click', '.edit-btn', function(e) {
@@ -180,38 +207,7 @@
         }
     }
 
-    function menuDeroulantRepas() {
-        $.ajax({
-                url: URL_API + 'api_dashboard.php', 
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    // Si la requête réussit, on met à jour le tableau des repas
-                    var table = $('#myTable').DataTable();
-                    table.clear();
-                    $.each(response, function(i, item) {
-                        table.row.add([
-                            item.DATE,
-                            item.NOM,
-                            item.QUANTITE,
-                            item.micronutriment_1,
-                            item.micronutriment_2,
-                            item.micronutriment_3,
-                            item.micronutriment_4,
-                            item.micronutriment_5,
-                            item.micronutriment_6,
-                            item.calculKcal,
-                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm()">Modifier</button> ' +
-                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
-                        ]).draw();
-                    });
-                },
-                error: function() {
-                    // Si la requête échoue, on affiche une erreur
-                    alert('Erreur lors de la récupération des repas');
-                }
-        });
-    }
+    menuDeroulantRepas();
 
 </script>
         <!--Form d'ajout d'un aliment-->

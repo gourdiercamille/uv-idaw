@@ -58,4 +58,15 @@
         $result = $request->execute();
         return $result;
     }
+
+    function getAllNameAliment() {
+        global $pdo;
+        $request = $pdo->prepare("SELECT aliment.NOM
+        FROM aliment
+        ORDER BY aliment.NOM ASC
+        ");
+        $request->execute();
+        $repas = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $repas;
+    }
 ?>
