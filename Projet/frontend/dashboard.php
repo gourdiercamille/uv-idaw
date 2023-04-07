@@ -40,6 +40,8 @@
 <body>
     <div class="container">
         <h1>Liste des repas</h1>
+        <h2><span id="result"></span></h2>
+        
         <table id="myTable" class="table table-striped">
             <thead>
                 <tr>
@@ -158,6 +160,7 @@
                 success: function(response) {
                     // Si la requête réussit, on met à jour le tableau des repas
                     getRepasByLogin(login);
+                    calculBesoinsKcal(login);
                 },
                 error: function() {
                     // Si la requête échoue,
@@ -191,11 +194,104 @@
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
                 getRepasByLogin(login);
+                calculBesoinsKcal(login);
             },
             error: function() {
                 // Si la requête échoue, on affiche une erreur
                 alert('Erreur lors de la suppression du repas');
             }
+        });
+    }
+
+    function calculBesoinsKcal(login) {
+        $.ajax({
+                url: URL_API + 'api_dashboard.php?Kcal=1&LOGIN=' + login, 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response, function(i, item) {
+                        // Récupérer les valeurs des champs nécessaires depuis la base de données
+                        const POIDS = item.POIDS;
+                        const TAILLE = item.TAILLE;
+                        const AGE_MOYENNE = parseFloat(item.AGE_MOYENNE);
+                        var LIBELLE_SPORT = item.LIBELLE_SPORT;
+                        var LIBELLE_SEXE = item.LIBELLE_SEXE;
+
+                        // Calculer les besoins en calories en fonction du genre
+                        let besoinsKcal;
+                        
+                        if (LIBELLE_SEXE === 'Masculin') {
+
+                            besoinsKcal = (10 * POIDS) + (6.25 * TAILLE) - (5 * AGE_MOYENNE) + 5;
+                            console.log(besoinsKcal);
+                            if (LIBELLE_SPORT === "Faible") {
+                                besoinsKcal *= 1.3;
+                            } else if (LIBELLE_SPORT === "Modérée") {
+                                besoinsKcal *= 1.6;
+                            } else if (LIBELLE_SPORT === "Elevée") {
+                                besoinsKcal *= 1.75;
+                            }
+                        } if (LIBELLE_SEXE === 'Féminin') {
+
+                            besoinsKcal = (10 * POIDS) + (6.25 * TAILLE) - (5 * AGE_MOYENNE) - 161;
+                            if (LIBELLE_SPORT === "Faible") {
+                                besoinsKcal *= 1.3;
+                            } else if (LIBELLE_SPORT === "Modérée") {
+                                besoinsKcal *= 1.6;
+                            } else if (LIBELLE_SPORT === "Elevée") {
+                                besoinsKcal *= 1.75;
+                            }
+
+                        } if (LIBELLE_SEXE === 'Ne souhaite pas répondre') {
+                                besoinsKcal = null;
+                        }
+
+                        // Appel de la fonction besoinsApresRepas avec utilisation de la promesse retournée
+                        besoinsApresRepas(login, besoinsKcal)
+                        .then(function(besoinsKcal) {
+                            var resultElement = document.getElementById("result");
+                            var resultText = "";
+                            if (besoinsKcal === null) {
+                                resultText = "Vos informations ne sont pas assez complètes pour nous permettre d'établir vpos besoins en calories. Le renseignement de votre sexe est nécessaire.";
+                            }
+                            else if (besoinsKcal < 0) {
+                                resultText = "Selon vos informations et vos repas consommés aujourd'hui, vous avez dépassé votre quota de calories de " + -1*besoinsKcal + "kcal aujourd'hui.";
+                            }
+                            else if (besoinsKcal > 0) {
+                                resultText = "Selon vos informations et vos repas consommés aujourd'hui, il vous reste " + besoinsKcal + "kcal à consommer aujourd'hui.";
+                            }
+                            resultElement.textContent = resultText;
+                            })
+                        .catch(function() {
+                            // Gestion des erreurs
+                        });
+                });
+            },
+                    error: function() {
+                                // Si la requête échoue, on affiche une erreur
+                                alert('Erreur lors du calcul des besoins en calories');
+                            }
+        });
+    }
+
+    function besoinsApresRepas(login, besoinsKcal) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: URL_API + 'api_dashboard.php?Kcal=1&LOGIN=' + login + '&Besoins=1', 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response, function(i, item) {
+                        besoinsKcal = besoinsKcal - item.calculKcal;
+                    });
+                    resolve(besoinsKcal);
+                },
+                error: function() {
+                    // Si la requête échoue, on affiche une erreur
+                    alert('Erreur lors du calcul des besoins en calories');
+                    reject();
+                }
+            });
         });
     }
 
@@ -206,6 +302,7 @@
         var login = '<?php $login = isset($_GET['login']) ? $_GET['login'] : 'null'; echo htmlspecialchars($login, ENT_QUOTES, 'UTF-8'); ?>';
         if (login != 'null') {
             getRepasByLogin(login);
+            calculBesoinsKcal(login);
         }
         else {
             getRepas();

@@ -86,4 +86,59 @@
         $repas = $request->fetchAll(PDO::FETCH_ASSOC);
         return $repas;
     }
+
+    function calculBesoinsKcal($login){
+        global $pdo;
+        $request = $pdo->prepare("SELECT
+        utilisateur.LOGIN,
+        utilisateur.TAILLE,
+        utilisateur.POIDS,
+        ((tranche_age.AGE_MIN + tranche_age.AGE_MAX) / 2) AS AGE_MOYENNE,
+        sexe.LIBELLE AS LIBELLE_SEXE,
+        intensite_sport.LIBELLE AS LIBELLE_SPORT
+        FROM
+        utilisateur
+        JOIN
+        tranche_age ON utilisateur.ID_TRANCHE_AGE = tranche_age.ID_TRANCHE_AGE
+        JOIN
+        sexe ON utilisateur.ID_SEXE = sexe.ID_SEXE
+        JOIN
+        intensite_sport ON utilisateur.ID_SPORT = intensite_sport.ID_SPORT
+        WHERE utilisateur.LOGIN = '$login';
+        ");
+        $request->execute();
+        $besoins = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $besoins;
+    }
+
+    function besoinsApresRepas($login) {
+        global $pdo;
+        $request = $pdo->prepare("SELECT
+        (manger.QUANTITE) *
+        (
+            9 * MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 2 THEN contenir.RATIO ELSE 0 END) +
+            4 * (
+                MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 1 THEN contenir.RATIO ELSE 0 END) +
+                MAX(CASE WHEN contenir.ID_MICRONUTRIMENT = 3 THEN contenir.RATIO ELSE 0 END)
+            )
+        ) AS calculKcal
+    FROM
+        manger
+    JOIN
+        contenir ON manger.ID_ALIMENT = contenir.ID_ALIMENT
+    JOIN
+        aliment ON manger.ID_ALIMENT = aliment.ID_ALIMENT
+    JOIN
+        utilisateur ON manger.LOGIN = utilisateur.LOGIN
+    WHERE
+        utilisateur.LOGIN = '$login' AND
+        manger.DATE = CURDATE()
+    GROUP BY
+        manger.ID_ALIMENT, manger.QUANTITE
+    ORDER BY
+        manger.QUANTITE DESC;");
+        $request->execute();
+        $repas = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $repas;        
+    }
 ?>

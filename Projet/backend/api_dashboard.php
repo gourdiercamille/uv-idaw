@@ -22,19 +22,44 @@ if ($method == 'GET') {
         }
     }
 
-    if (isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu') {
+    if (isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu' && isset($_GET['Besoins'])) {
+        $besoins = besoinsApresRepas($_GET['LOGIN']);
+        if ($besoins) {
+            echo json_encode(mb_convert_encoding($besoins, "UTF-8"));
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'Besoins not found']);
+        }
+    }
+
+    if (isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu' && !isset($_GET['Besoins'])) {
+        $besoins = calculBesoinsKcal($_GET['LOGIN']);
+        if ($besoins) {
+            echo json_encode(mb_convert_encoding($besoins, "UTF-8"));
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'Besoins not found']);
+        }
+    }
+    
+    else if (!isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu') {
         $repas = getRepasByLogin($_GET['LOGIN']);
         if ($repas) {
             echo json_encode(mb_convert_encoding($repas, "UTF-8"));
         } else {
             header('HTTP/1.1 404 Not Found');
-            echo json_encode(['error' => 'Repas not found']);
+            echo json_encode(['error' => 'Repas not found1']);
         }
     }
     
-    if (isset($_GET['LOGIN']) && $_GET['LOGIN'] == 'menu') {
+    else if (!isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] == 'menu') {
             $repas = getAllRepas();
-            echo json_encode(mb_convert_encoding($repas, "UTF-8"));
+            if ($repas) {
+                echo json_encode(mb_convert_encoding($repas, "UTF-8"));
+            } else {
+                header('HTTP/1.1 404 Not Found');
+                echo json_encode(['error' => 'Repas not found2']);
+            }
     }
 }
 
