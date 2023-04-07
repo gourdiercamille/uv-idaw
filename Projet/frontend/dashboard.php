@@ -4,6 +4,7 @@
     <title>Repas</title>
     <meta charset="utf8">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="style_dashboard.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>function menuDeroulantRepas() {
@@ -177,6 +178,7 @@
                 success: function(response) {
                     // Si la requête réussit, 
                     alert("Aliment ajouté avec succès !");
+                    location.reload();
                 },
                 error: function() {
                     // Si la requête échoue,
@@ -285,13 +287,13 @@
                     <td><input type="float" id="quanVitamine" name="quanVitamine" value=""></td>
                 </tr><tr>
                     <th></th>
-                    <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
+                    <td><input class='edit-btn' type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
                 </tr>
             </table>
         </form>
 
         <!--Form de modif d'un repas-->
-        <form id="edit_repas_form" method="PUT" style="display:none;">
+        <!-- <form id="edit_repas_form" method="PUT" style="display:none;">
             <fieldset>
                 <legend>Modifier un repas</legend>
             </fieldset>
@@ -310,7 +312,7 @@
                     <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm('edit_repas_form')"/></td>
                 </tr>
             </table>
-        </form>
+        </form> -->
 
 
 

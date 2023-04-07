@@ -64,6 +64,7 @@ if ($method == 'PUT') {
         $poids = $data['POIDS'];
         $taille = $data['TAILLE'];
         updateUserByLogin($login, $age, $sport, $poids, $taille);
+        echo json_encode(['success' => 'User updated successfully']);
     } else {
         header('HTTP/1.1 400 Bad Request');
         echo json_encode(['error' => 'Invalid JSON data']);

@@ -71,14 +71,14 @@ if ($method == 'DELETE') {
     }
 }
 
-//update repas
-if ($method == 'PUT') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateRepasByLogin($data['LOGIN'], $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
-    if ($result) {
-        echo json_encode(['success' => 'Repas updated successfully']);
-    } else {
-        header('HTTP/1.1 404 Not Found');
-        echo json_encode(['error' => 'Repas not found']);
-    }
-}
+// //update repas
+// if ($method == 'PUT') {
+//     $data = json_decode(file_get_contents('php://input'), true);
+//     $result = updateRepasByLogin($data['LOGIN'],  $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
+//     if ($result) {
+//         echo json_encode(['success' => 'Repas updated successfully']);
+//     } else {
+//         header('HTTP/1.1 404 Not Found');
+//         echo json_encode(['error' => 'Repas not found']);
+//     }
+// }
