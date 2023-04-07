@@ -59,4 +59,6 @@
             $request = $pdo->prepare("UPDATE utilisateur SET ID_TRANCHE_AGE = ?, ID_SPORT = ?, POIDS = ?, TAILLE = ? WHERE LOGIN = ?");
             $request->execute([$age, $sport, $poids, $taille, $login]);
         }
+
+        echo updateUserByLogin('chacha', 1, 1, 70, 170);
 ?>

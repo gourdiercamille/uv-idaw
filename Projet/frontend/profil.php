@@ -33,6 +33,7 @@
                         sport : user.ID_SPORT,
                     };
                     showUserInfos(infos);
+                    fillFormEditInfos(infos);
                 },
                 error: function() {
                     // Si la requête échoue, on affiche une erreur
@@ -45,13 +46,6 @@
         function showUserInfos(user) {
             var infoList = document.createElement("ul"); // Crée un élément de liste non ordonnée (ul)
             var keys = Object.keys(user); // Récupère les clés (noms des propriétés) de l'objet user
-
-            // // Pour chaque clé, crée un élément de liste pour chaque propriété
-            // keys.forEach(function(key) {
-            //     var listItem = document.createElement("li"); // Crée un élément de liste (li)
-            //     listItem.textContent = key + ": " + user[key]; // Définit le texte du listItem avec la clé et sa valeur correspondante dans l'objet user
-            //     infoList.appendChild(listItem); // Ajoute le listItem à la liste non ordonnée (ul)
-            // });
 
             var listItem = document.createElement("li"); // Crée un élément de liste (li)
             listItem.textContent = 'Nom : ' + user[keys[0]]; // Définit le texte du listItem avec la clé et sa valeur correspondante dans l'objet user
@@ -104,9 +98,9 @@
             // On récupère les infos de l'utilisateur
             getInfos();
             // On modifie les infos de l'utilisateur
-            $('#edit_form').on('submit', function(event) {
-                event.preventDefault();
-                var login = $(this).data('login');
+            $('#edit-form').submit(function(e) {
+                e.preventDefault()
+                var login = '<?php echo $_GET['login']; ?>'
                 var age = $('#editAge').val();
                 var sport = $('#editSport').val();
                 var poids = $('#editPoids').val();
@@ -124,15 +118,23 @@
                     form.style.display = "none";
                 }
         }
+        
+        //Fonction pour remplir le form de modification des infos de l'utilisateur
+        function fillFormEditInfos(user) {
+            $('#editAge').val(user.age); // Remplir le champ d'âge avec la valeur de l'utilisateur
+            $('#editSport').val(user.sport); // Remplir le champ d'intensité de pratique sportive avec la valeur de l'utilisateur
+            $('#editPoids').val(user.poids); // Remplir le champ de poids avec la valeur de l'utilisateur
+            $('#editTaille').val(user.taille); // Remplir le champ de taille avec la valeur de l'utilisateur
+        }
 
         </script>
         <div>
-            <button class="btn-edit" onclick="toggleForm()">Modifier les Informations</button>
-                <form id="edit_form" method="PUT" style="display:none;">
+            <button class="btn-edit">Modifier les Informations</button>
+                <form id="edit-form" method="PUT" >
                     <table>
                         <tr>
                             <th>Age :</th>
-                            <td></label><select id="editAge" name="sexe">
+                            <td></label><select id="editAge" name="editAge">
                                 <option value="1">18-25ans</option>
                                 <option value="2">26-40ans</option>
                                 <option value="3">41-60ans</option>
@@ -140,20 +142,20 @@
                             </select></td>
                         </tr><tr>
                             <th>Intensité de Pratique Sportive :</th>
-                            <td></label><select id="editSport" name="sexe">
+                            <td></label><select id="editSport" name="editSport">
                                 <option value="1">Faible</option>
                                 <option value="2">Modérée</option>
                                 <option value="3">Elevée</option>
                             </select></td>
                         </tr><tr>
                             <th>Poids :</th>
-                            <td><input type="text" id="editPoids" name="editPoids" value=""></td>
+                            <td><input type="float" id="editPoids" name="editPoids" value=""></td>
                         </tr><tr>
                             <th>Taille :</th>
-                            <td><input type="email" id="editTaille" name="editTaille" value=""></td>
+                            <td><input type="float" id="editTaille" name="editTaille" value=""></td>
                         </tr><tr>
                             <th></th>
-                            <td><button type="submit" data-login="' + login + '" onclick="toggleForm()">Valider les modifications</button></td>
+                            <td><button type="submit" data-login="' + login + '">Valider les modifications</button></td>
                         </tr>
                     </table>
                 </form>

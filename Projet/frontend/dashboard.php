@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script>function menuDeroulantRepas() {
+    
+    <script>
+        function menuDeroulantRepas() {
             $.ajax({
                 url: URL_API + 'api_dashboard.php?menuDeroulant=1',
                 type: 'GET',
@@ -166,22 +168,22 @@
             });
         }
     // Fonction pour modifier un repas via l'API
-    function editRepas(login, date, id_aliment, quantite) {
-        $.ajax({
-            url: URL_API + 'api_dashboard.php', 
-            type: 'PUT',
-            data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
-            dataType: 'json',
-            success: function(response) {
-                // Si la requête réussit, on met à jour le tableau des repas
-                getRepas();
-            },
-            error: function() {
-                // Si la requête échoue, on affiche une erreur
-                alert('Erreur lors de la modification du repas');
-            }
-        });
-    }
+    // function editRepas(login, date, id_aliment, quantite) {
+    //     $.ajax({
+    //         url: URL_API + 'api_dashboard.php', 
+    //         type: 'PUT',
+    //         data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite }),
+    //         dataType: 'json',
+    //         success: function(response) {
+    //             // Si la requête réussit, on met à jour le tableau des repas
+    //             getRepas();
+    //         },
+    //         error: function() {
+    //             // Si la requête échoue, on affiche une erreur
+    //             alert('Erreur lors de la modification du repas');
+    //         }
+    //     });
+    // }
     // Fonction pour supprimer un repas via l'API
     function deleteRepas(login, id_aliment) {
         $.ajax({
@@ -238,14 +240,14 @@
             addRepas(login, date, id_aliment, quantite, nom_aliment);
         });
         // Modification d'un repas
-        $('#myTable tbody').on('click', '.edit-btn', function(e) {
-            e.preventDefault();
-            var login = $(this).data('login');
-            var date = $('#editDate').val();
-            var id_aliment = $('#editRepas').val();;
-            var quantite = $('#editQuantite').val();
-            editRepas(date, id_aliment, quantite);
-        });
+        // $('#myTable tbody').on('click', '.edit-btn', function(e) {
+        //     e.preventDefault();
+        //     var login = $(this).data('login');
+        //     var date = $('#editDate').val();
+        //     var id_aliment = $('#editRepas').val();;
+        //     var quantite = $('#editQuantite').val();
+        //     editRepas(date, id_aliment, quantite);
+        // });
         // Suppression d'un repas
         $('#myTable tbody').on('click', '.delete-btn', function() {
         var login = $(this).data('login');
@@ -326,7 +328,7 @@
             </table>
         </form>
 
-        <!--Form de modif d'un repas-->
+        <!-- Form de modif d'un repas
         <form id="edit_repas_form" method="PUT" style="display:none;">
             <fieldset>
                 <legend>Modifier un repas</legend>
@@ -343,7 +345,7 @@
                     <td><input type="float" id="editQuantite" name="editQuantite" value=""></td>
                 </tr><tr>
                     <th></th>
-                    <td><input type="submit" name="edit" value="Valider les Modifications"/></td> <!--onclick="toggleForm('edit_repas_form')"-->
+                    <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm('edit_repas_form')"></td> 
                 </tr>
             </table>
-        </form>
+        </form> -->
