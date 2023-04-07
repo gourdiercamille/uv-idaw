@@ -60,7 +60,7 @@
         </table>
     </div>
 
-    <script>let login = '<?php echo $_GET['LOGIN']; ?>';</script>
+    <script>let login = '<?php echo $_GET['login']; ?>';</script>
     <button onclick="window.location.href = 'profil.php?login=' + login">Voir mon profil</button>
 
     <h2>Ajouter un repas:</h2><br>
@@ -131,9 +131,9 @@
                 error: function() {
                     // Si la requête échoue,
                     alert('Erreur lors de l\'ajout du repas');
-            }
-        });
-    }
+                }
+            });
+        }
     // Fonction pour modifier un repas via l'API
     function editRepas(date, id_aliment, quantite) {
         $.ajax({
@@ -167,6 +167,24 @@
             }
         });
     }
+    // Fonction pour ajouter un aliment
+    function addAliment(libelle, type_aliment, lipides, glucides, proteines, fibres, sel, vitamines) {
+        $.ajax({
+                url: URL_API + 'api_aliment.php', 
+                type: 'POST',
+                data: JSON.stringify({ LIBELLE: libelle, TYPE_ALIMENT: type_aliment, LIPIDES: lipides, GLUCIDES: glucides, PROTEINES: proteines, FIBRES: fibres, SEL: sel, VITAMINES: vitamines }),
+                dataType: 'json',
+                success: function(response) {
+                    // Si la requête réussit, 
+                    alert("Aliment ajouté avec succès !");
+                },
+                error: function() {
+                    // Si la requête échoue,
+                    alert('Erreur lors de l\'ajout de l\'aliment');
+                }
+            });
+    }
+
     $(document).ready(function() {
         // Initialisation du tableau DataTable
         $('#myTable').DataTable();
@@ -200,6 +218,19 @@
             deleteRepas(login, id_aliment);
         }
         });
+        // Ajout d'un aliment
+        $('#add-aliment-form').submit(function(e) {
+            e.preventDefault();
+            var libelle = $('#addAliment').val();
+            var type_aliment = $('#type_aliment').val();
+            var lipides = $('#quanLipide').val();
+            var glucides = $('#quanGlucide').val();
+            var proteines = $('#quanProteine').val();
+            var fibres = $('#quanFibre').val();
+            var sel = $('#quanSel').val();
+            var vitamines = $('#quanVitamine').val();
+            addAliment(libelle, type_aliment, lipides, glucides, proteines, fibres, sel, vitamines);
+        });
 
     });
 
@@ -218,13 +249,22 @@
         <!--Form d'ajout d'un aliment-->
         <button class="btn-add" onclick="toggleForm('add-aliment-form')">Ajouter un Aliment</button>
         <form id="add-aliment-form" method="POST" style="display:none;">
-            <fieldset>
-                <legend>Ajouter un Aliment</legend>
-            </fieldset>
+            <h2>Ajouter un aliment</h2>
             <table>
                 <tr>
                     <th>Libellé :</th>
                     <td><input type="text" id="addAliment" name="addAliment" value=""></td>
+                </tr><tr>
+                    <th>Type d'Aliment:</th>
+                    <td></label><select id="type_aliment" name="type_aliment">
+                        <option value="1">Plat Composé</option>
+                        <option value="2">Viande, Oeuf, Poisson, Fruit de Mer</option>
+                        <option value="4">Fruit, Légume, Légumineuse</option>
+                        <option value="7">Produit laitier</option>
+                        <option value="8">Produit Céréalier</option>
+                        <option value="9">Produit Sucré</option>
+                        <option value="10">Boisson</option>
+                    </select></td>
                 </tr><tr>
                     <th>Quantité de Lipide :</th>
                     <td><input type="float" id="quanLipide" name="quanLipide" value=""></td>
@@ -241,8 +281,8 @@
                     <th>Quantité de Sel :</th>
                     <td><input type="float" id="quanSel" name="quanSel" value=""></td>
                 </tr><tr>
-                    <th>Quantité de Vitamines :</th>
-                    <td><input type="float" id="quanVitamines" name="quanVitamines" value=""></td>
+                    <th>Quantité de Vitamine :</th>
+                    <td><input type="float" id="quanVitamine" name="quanVitamine" value=""></td>
                 </tr><tr>
                     <th></th>
                     <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>

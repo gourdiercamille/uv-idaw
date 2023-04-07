@@ -45,10 +45,25 @@ if ($method == 'GET') {
 //     }
 // }
 
+// if ($method == 'PUT') {
+//     $data = json_decode(file_get_contents('php://input'), true);
+//     if ($data && json_last_error() === JSON_ERROR_NONE) {
+//         updateUserByLogin($data['LOGIN'], $data['ID_TRANCHE_AGE'], $data['ID_SPORT'], $data['POIDS'], $data['TAILLE']);
+//     } else {
+//         header('HTTP/1.1 400 Bad Request');
+//         echo json_encode(['error' => 'Invalid JSON data']);
+//     }
+// }
+
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
     if ($data && json_last_error() === JSON_ERROR_NONE) {
-        updateUserByLogin($data['LOGIN'], $data['ID_TRANCHE_AGE'], $data['ID_SPORT'], $data['POIDS'], $data['TAILLE']);
+        $login = $data['LOGIN'];
+        $age = $data['ID_TRANCHE_AGE'];
+        $sport = $data['ID_SPORT'];
+        $poids = $data['POIDS'];
+        $taille = $data['TAILLE'];
+        updateUserByLogin($login, $age, $sport, $poids, $taille);
     } else {
         header('HTTP/1.1 400 Bad Request');
         echo json_encode(['error' => 'Invalid JSON data']);

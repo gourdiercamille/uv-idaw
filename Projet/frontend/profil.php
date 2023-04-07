@@ -106,6 +106,7 @@
             // On modifie les infos de l'utilisateur
             $('#edit_form').on('submit', function(event) {
                 event.preventDefault();
+                var login = $(this).data('login');
                 var age = $('#editAge').val();
                 var sport = $('#editSport').val();
                 var poids = $('#editPoids').val();
@@ -152,7 +153,7 @@
                             <td><input type="email" id="editTaille" name="editTaille" value=""></td>
                         </tr><tr>
                             <th></th>
-                            <td><button type="submit" class="btn-edit" data-login="' + login + '" onclick="toggleForm()">Valider les modifications</button></td>
+                            <td><button type="submit" data-login="' + login + '" onclick="toggleForm()">Valider les modifications</button></td>
                         </tr>
                     </table>
                 </form>

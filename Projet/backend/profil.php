@@ -48,9 +48,15 @@
         //     return $result;
         // }
 
+        // function updateUserByLogin($login, $age, $sport, $poids, $taille) {
+        //     global $pdo;
+        //     $request = $pdo->prepare("UPDATE utilisateur SET ID_TRANCHE_AGE = $age , ID_SPORT = $sport, POIDS = $poids, TAILLE = $taille WHERE LOGIN = '$login'");
+        //     $request->execute();
+        // }
+
         function updateUserByLogin($login, $age, $sport, $poids, $taille) {
             global $pdo;
-            $request = $pdo->prepare("UPDATE utilisateur SET ID_TRANCHE_AGE = $age , ID_SPORT = $sport, POIDS = $poids, TAILLE = $taille WHERE LOGIN = '$login'");
-            $request->execute();
+            $request = $pdo->prepare("UPDATE utilisateur SET ID_TRANCHE_AGE = ?, ID_SPORT = ?, POIDS = ?, TAILLE = ? WHERE LOGIN = ?");
+            $request->execute([$age, $sport, $poids, $taille, $login]);
         }
 ?>
