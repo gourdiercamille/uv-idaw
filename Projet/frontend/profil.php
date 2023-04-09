@@ -114,6 +114,8 @@
             $('#edit_form').on('submit', function(event) {
                 event.preventDefault();
                 var login = '<?php echo $_GET['login']; ?>';
+           // $('#edit-form').submit(function(e) {
+               // e.preventDefault()
                 var age = $('#editAge').val();
                 var sport = $('#editSport').val();
                 var poids = $('#editPoids').val();
@@ -131,11 +133,19 @@
                     form.style.display = "none";
                 }
         }
+        
+        //Fonction pour remplir le form de modification des infos de l'utilisateur
+        function fillFormEditInfos(user) {
+            $('#editAge').val(user.age); // Remplir le champ d'âge avec la valeur de l'utilisateur
+            $('#editSport').val(user.sport); // Remplir le champ d'intensité de pratique sportive avec la valeur de l'utilisateur
+            $('#editPoids').val(user.poids); // Remplir le champ de poids avec la valeur de l'utilisateur
+            $('#editTaille').val(user.taille); // Remplir le champ de taille avec la valeur de l'utilisateur
+        }
 
         </script>
         <div>
-            <button class="btn-edit" onclick="toggleForm()">Modifier les Informations</button>
-                <form id="edit_form" method="PUT" style="display:none;">
+            <button class="btn-edit">Modifier les Informations</button>
+                <form id="edit-form" method="PUT" >
                     <table>
                         <tr>
                             <th>Age :</th>
@@ -161,6 +171,7 @@
                         </tr><tr>
                             <th></th>
                             <td><button type="submit" data-login="' + login + '" onclick="toggleForm()" class='btn-edit' >Valider les modifications</button></td>
+
                         </tr>
                     </table>
                 </form>

@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="style_dashboard.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script>function menuDeroulantRepas() {
+    
+    <script>
+        function menuDeroulantRepas() {
             $.ajax({
                 url: URL_API + 'api_dashboard.php?menuDeroulant=1',
                 type: 'GET',
@@ -169,7 +171,6 @@
             }
         });
     }
-
     // Fonction pour supprimer un repas via l'API
     function deleteRepas(login, id_aliment) {
         $.ajax({

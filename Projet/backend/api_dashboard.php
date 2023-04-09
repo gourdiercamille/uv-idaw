@@ -99,7 +99,7 @@ if ($method == 'DELETE') {
 //update repas
 if ($method == 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $result = updateRepasByLogin($data['login'],  $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
+    $result = updateRepasByLogin($data['LOGIN'],  $data['ID_ALIMENT'], $data['QUANTITE'], $data['DATE']);
     if ($result) {
         echo json_encode(['success' => 'Repas updated successfully']);
     } else {
