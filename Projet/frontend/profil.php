@@ -111,11 +111,12 @@
             // On récupère les infos de l'utilisateur
             getInfos();
             // On modifie les infos de l'utilisateur
-            $('#edit_form').on('submit', function(event) {
-                event.preventDefault();
-                var login = '<?php echo $_GET['login']; ?>';
-           // $('#edit-form').submit(function(e) {
-               // e.preventDefault()
+            // $('#edit_form').on('submit', function(event) {
+            //     event.preventDefault();
+            //     var login = '<?php echo $_GET['login']; ?>';
+           $('#edit-form').submit(function(e) {
+               e.preventDefault();
+               var login = '<?php echo $_GET['login']; ?>';
                 var age = $('#editAge').val();
                 var sport = $('#editSport').val();
                 var poids = $('#editPoids').val();
@@ -126,7 +127,7 @@
         
         
         function toggleForm() {
-                var form = document.getElementById("edit_form");
+                var form = document.getElementById("edit-form");
                 if (form.style.display === "none") {
                     form.style.display = "block";
                 } else {
@@ -135,17 +136,17 @@
         }
         
         //Fonction pour remplir le form de modification des infos de l'utilisateur
-        function fillFormEditInfos(user) {
-            $('#editAge').val(user.age); // Remplir le champ d'âge avec la valeur de l'utilisateur
-            $('#editSport').val(user.sport); // Remplir le champ d'intensité de pratique sportive avec la valeur de l'utilisateur
-            $('#editPoids').val(user.poids); // Remplir le champ de poids avec la valeur de l'utilisateur
-            $('#editTaille').val(user.taille); // Remplir le champ de taille avec la valeur de l'utilisateur
-        }
+        // function fillFormEditInfos(user) {
+        //     $('#editAge').val(user.age); // Remplir le champ d'âge avec la valeur de l'utilisateur
+        //     $('#editSport').val(user.sport); // Remplir le champ d'intensité de pratique sportive avec la valeur de l'utilisateur
+        //     $('#editPoids').val(user.poids); // Remplir le champ de poids avec la valeur de l'utilisateur
+        //     $('#editTaille').val(user.taille); // Remplir le champ de taille avec la valeur de l'utilisateur
+        // }
 
         </script>
         <div>
-            <button class="btn-edit">Modifier les Informations</button>
-                <form id="edit-form" method="PUT" >
+            <button class="btn-edit" onclick="toggleForm()">Modifier les Informations</button>
+                <form id="edit-form" method="PUT" style="display:none;">
                     <table>
                         <tr>
                             <th>Age :</th>
