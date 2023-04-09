@@ -1,4 +1,5 @@
 <?php
+
     require_once('config.php');
     require_once('init_pdo.php');
 
@@ -138,7 +139,14 @@
     ORDER BY
         manger.QUANTITE DESC;");
         $request->execute();
-        $repas = $request->fetchAll(PDO::FETCH_ASSOC);
-        return $repas;        
+        if ($request->rowCount() > 0) {
+            $besoins = $request->fetchAll(PDO::FETCH_ASSOC);
+            return $besoins;
+        } else {
+            $request = $pdo->prepare("SELECT RATIO AS calculKcal FROM contenir WHERE ID_ALIMENT = 1 AND ID_MICRONUTRIMENT = 6;");
+            $request->execute();
+            $besoins = $request->fetchAll(PDO::FETCH_ASSOC);
+            return $besoins;
+        }       
     }
 ?>
