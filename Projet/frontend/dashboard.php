@@ -255,7 +255,7 @@
             },
                     error: function() {
                                 // Si la requête échoue, on affiche une erreur
-                                alert('Erreur lors du calcul des besoins en calories');
+                                alert('Erreur lors du calcul des besoins en calories ');
                             }
         });
     }
@@ -396,7 +396,7 @@
                     <td><input type="float" id="quanSel" name="quanSel" value=""></td>
                 </tr><tr>
                     <th>Quantité de Vitamines :</th>
-                    <td><input type="float" id="quanVitamines" name="quanVitamines" value=""></td>
+                    <td><input type="float" id="quanVitamine" name="quanVitamine" value=""></td>
                 </tr><tr>
                     <th></th>
                     <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
