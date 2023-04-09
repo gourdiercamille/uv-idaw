@@ -41,6 +41,8 @@
 <body>
     <div class="container">
         <h1>Liste des repas</h1>
+        <h2><span id="result"></span></h2>
+        
         <table id="myTable" class="table table-striped">
             <thead>
                 <tr>
@@ -67,8 +69,6 @@
     <h2>Ajouter un repas:</h2><br>
 
     <form id="add-form">
-        <label for="login-input">Login du mangeur:</label>
-        <input type="text" id="login-input" name="login-input"><br>
 
         <div id="menu-deroulant-repas"></div>
 
@@ -76,7 +76,7 @@
         <input type="text" id="quantite-input" name="quantite-input"><br>
 
         <label for="date-input">Date:</label>
-        <input type="text" id="date-input" name="date-input"><br>
+        <input type="date" id="date-input" name="date-input"><br>
 
         <button type="submit">Ajouter</button>
     </form>
@@ -88,7 +88,7 @@
         // Fonction pour récupérer la liste des repas via l'API
         function getRepas() {
             $.ajax({
-                url: URL_API + 'api_dashboard.php?LOGIN=menu', 
+                url: URL_API + 'api_dashboard.php?login=menu', 
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
@@ -107,7 +107,40 @@
                             item.micronutriment_5,
                             item.micronutriment_6,
                             item.calculKcal,
-                            '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm()">Modifier</button> ' +
+                            // '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm("edit_repas_form")">Modifier</button> ' +
+                            '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
+                        ]).draw();
+                    });
+                },
+                error: function() {
+                    // Si la requête échoue, on affiche une erreur
+                    alert('Erreur lors de la récupération des repas');
+                }
+            });
+        }
+
+        function getRepasByLogin(login) {
+            $.ajax({
+                url: URL_API + 'api_dashboard.php?login=' + login, 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Si la requête réussit, on met à jour le tableau des repas
+                    var table = $('#myTable').DataTable();
+                    table.clear();
+                    $.each(response, function(i, item) {
+                        table.row.add([
+                            item.DATE,
+                            item.NOM,
+                            item.QUANTITE,
+                            item.micronutriment_1,
+                            item.micronutriment_2,
+                            item.micronutriment_3,
+                            item.micronutriment_4,
+                            item.micronutriment_5,
+                            item.micronutriment_6,
+                            item.calculKcal,
+                            // '<button class="btn btn-sm btn-primary edit-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '" onclick="toggleForm("edit_repas_form")">Modifier</button> ' +
                             '<button class="btn btn-sm btn-danger delete-btn" data-LOGIN="' + item.LOGIN + '" data-ID_ALIMENT="' + item.ID_ALIMENT + '" data-DATE="' + item.DATE + '" data-QUANTITE="' + item.QUANTITE + '">Supprimer</button>'
                         ]).draw();
                     });
@@ -121,46 +154,32 @@
         // Fonction pour ajouter un repas via l'API
         function addRepas(login, date, id_aliment, quantite, nom_aliment) {
             $.ajax({
-                url: URL_API + 'api_dashboard.php', 
+                url: URL_API + 'api_dashboard.php?login=' + login, 
                 type: 'POST',
                 data: JSON.stringify({ LOGIN: login, DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite, NOM: nom_aliment }),
                 dataType: 'json',
                 success: function(response) {
                     // Si la requête réussit, on met à jour le tableau des repas
-                    getRepas();
+                    getRepasByLogin(login);
+                    calculBesoinsKcal(login);
                 },
                 error: function() {
                     // Si la requête échoue,
                     alert('Erreur lors de l\'ajout du repas');
-                }
-            });
-        }
-    // Fonction pour modifier un repas via l'API
-    function editRepas(date, id_aliment, quantite) {
-        $.ajax({
-            url: URL_API + 'api_dashboard.php', 
-            type: 'PUT',
-            data: JSON.stringify({ DATE: date, ID_ALIMENT: id_aliment, QUANTITE: quantite, LOGIN: login }),
-            dataType: 'json',
-            success: function(response) {
-                // Si la requête réussit, on met à jour le tableau des repas
-                getRepas();
-            },
-            error: function() {
-                // Si la requête échoue, on affiche une erreur
-                alert('Erreur lors de la modification du repas');
             }
         });
     }
+
     // Fonction pour supprimer un repas via l'API
     function deleteRepas(login, id_aliment) {
         $.ajax({
-            url: URL_API + 'api_dashboard.php' + '?LOGIN=' + login + '&ID_ALIMENT=' + id_aliment, // URL de l'API avec le login de l'utilisateur et l'id de l'aliment à supprimer
+            url: URL_API + 'api_dashboard.php' + '?login=' + login + '&ID_ALIMENT=' + id_aliment, // URL de l'API avec le login de l'utilisateur et l'id de l'aliment à supprimer
             type: 'DELETE',
             dataType: 'json',
             success: function(response) {
                 // Si la requête réussit, on met à jour le tableau des repas
-                getRepas();
+                getRepasByLogin(login);
+                calculBesoinsKcal(login);
             },
             error: function() {
                 // Si la requête échoue, on affiche une erreur
@@ -168,6 +187,99 @@
             }
         });
     }
+
+    function calculBesoinsKcal(login) {
+        $.ajax({
+                url: URL_API + 'api_dashboard.php?Kcal=1&login=' + login, 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response, function(i, item) {
+                        // Récupérer les valeurs des champs nécessaires depuis la base de données
+                        const POIDS = item.POIDS;
+                        const TAILLE = item.TAILLE;
+                        const AGE_MOYENNE = parseFloat(item.AGE_MOYENNE);
+                        var LIBELLE_SPORT = item.LIBELLE_SPORT;
+                        var LIBELLE_SEXE = item.LIBELLE_SEXE;
+
+                        // Calculer les besoins en calories en fonction du genre
+                        let besoinsKcal;
+                        
+                        if (LIBELLE_SEXE === 'Masculin') {
+
+                            besoinsKcal = (10 * POIDS) + (6.25 * TAILLE) - (5 * AGE_MOYENNE) + 5;
+                            console.log(besoinsKcal);
+                            if (LIBELLE_SPORT === "Faible") {
+                                besoinsKcal *= 1.3;
+                            } else if (LIBELLE_SPORT === "Modérée") {
+                                besoinsKcal *= 1.6;
+                            } else if (LIBELLE_SPORT === "Elevée") {
+                                besoinsKcal *= 1.75;
+                            }
+                        } if (LIBELLE_SEXE === 'Féminin') {
+
+                            besoinsKcal = (10 * POIDS) + (6.25 * TAILLE) - (5 * AGE_MOYENNE) - 161;
+                            if (LIBELLE_SPORT === "Faible") {
+                                besoinsKcal *= 1.3;
+                            } else if (LIBELLE_SPORT === "Modérée") {
+                                besoinsKcal *= 1.6;
+                            } else if (LIBELLE_SPORT === "Elevée") {
+                                besoinsKcal *= 1.75;
+                            }
+
+                        } if (LIBELLE_SEXE === 'Ne souhaite pas répondre') {
+                                besoinsKcal = null;
+                        }
+
+                        // Appel de la fonction besoinsApresRepas avec utilisation de la promesse retournée
+                        besoinsApresRepas(login, besoinsKcal)
+                        .then(function(besoinsKcal) {
+                            var resultElement = document.getElementById("result");
+                            var resultText = "";
+                            if (besoinsKcal === null) {
+                                resultText = "Vos informations ne sont pas assez complètes pour nous permettre d'établir vpos besoins en calories. Le renseignement de votre sexe est nécessaire.";
+                            }
+                            else if (besoinsKcal < 0) {
+                                resultText = "Selon vos informations et vos repas consommés aujourd'hui, vous avez dépassé votre quota de calories de " + -1*besoinsKcal + "kcal aujourd'hui.";
+                            }
+                            else if (besoinsKcal > 0) {
+                                resultText = "Selon vos informations et vos repas consommés aujourd'hui, il vous reste " + besoinsKcal + "kcal à consommer aujourd'hui.";
+                            }
+                            resultElement.textContent = resultText;
+                            })
+                        .catch(function() {
+                            // Gestion des erreurs
+                        });
+                });
+            },
+                    error: function() {
+                                // Si la requête échoue, on affiche une erreur
+                                alert('Erreur lors du calcul des besoins en calories');
+                            }
+        });
+    }
+
+    function besoinsApresRepas(login, besoinsKcal) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: URL_API + 'api_dashboard.php?Kcal=1&login=' + login + '&Besoins=1', 
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    $.each(response, function(i, item) {
+                        besoinsKcal = besoinsKcal - item.calculKcal;
+                    });
+                    resolve(besoinsKcal);
+                },
+                error: function() {
+                    // Si la requête échoue, on affiche une erreur
+                    alert('Erreur lors du calcul des besoins en calories');
+                    reject();
+                }
+            });
+        });
+    }
+
     // Fonction pour ajouter un aliment
     function addAliment(libelle, type_aliment, lipides, glucides, proteines, fibres, sel, vitamines) {
         $.ajax({
@@ -191,26 +303,23 @@
         // Initialisation du tableau DataTable
         $('#myTable').DataTable();
         // Récupération de la liste des repas au chargement de la page
-        getRepas();
+        var login = '<?php $login = isset($_GET['login']) ? $_GET['login'] : 'null'; echo htmlspecialchars($login, ENT_QUOTES, 'UTF-8'); ?>';
+        if (login != 'null') {
+            getRepasByLogin(login);
+            calculBesoinsKcal(login);
+        }
+        else {
+            getRepas();
+        }
         // Ajout d'un repas
         $('#add-form').submit(function(e) {
             e.preventDefault();
-            var login = $('#login-input').val();
+            var login = '<?php $login = isset($_GET['login']) ? $_GET['login'] : 'null'; echo htmlspecialchars($login, ENT_QUOTES, 'UTF-8'); ?>';
             var quantite = $('#quantite-input').val();
             var date = $('#date-input').val();
             var id_aliment = $(this).find('option:selected').data('id-aliment'); // Obtenir la valeur de data-id-aliment de l'option sélectionnée
             var nom_aliment = $(this).find('option:selected').data('nom-aliment');
-            console.log(login, date, quantite, id_aliment, nom_aliment);
             addRepas(login, date, id_aliment, quantite, nom_aliment);
-        });
-        // Modification d'un repas
-        $('#myTable tbody').on('click', '.edit-btn', function(e) {
-            e.preventDefault();
-            var login = $(this).data('login');
-            var date = $('#editDate').val();
-            var id_aliment = $('#editRepas').val();;
-            var quantite = $('#editQuantite').val();
-            editRepas(date, id_aliment, quantite);
         });
         // Suppression d'un repas
         $('#myTable tbody').on('click', '.delete-btn', function() {
@@ -251,7 +360,9 @@
         <!--Form d'ajout d'un aliment-->
         <button class="btn-add" onclick="toggleForm('add-aliment-form')">Ajouter un Aliment</button>
         <form id="add-aliment-form" method="POST" style="display:none;">
-            <h2>Ajouter un aliment</h2>
+            <fieldset>
+                <legend>Ajouter un Aliment</legend>
+            </fieldset>
             <table>
                 <tr>
                     <th>Libellé :</th>
@@ -283,41 +394,11 @@
                     <th>Quantité de Sel :</th>
                     <td><input type="float" id="quanSel" name="quanSel" value=""></td>
                 </tr><tr>
-                    <th>Quantité de Vitamine :</th>
-                    <td><input type="float" id="quanVitamine" name="quanVitamine" value=""></td>
+                    <th>Quantité de Vitamines :</th>
+                    <td><input type="float" id="quanVitamines" name="quanVitamines" value=""></td>
                 </tr><tr>
                     <th></th>
-                    <td><input class='edit-btn' type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
+                    <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
                 </tr>
             </table>
         </form>
-
-        <!--Form de modif d'un repas-->
-        <!-- <form id="edit_repas_form" method="PUT" style="display:none;">
-            <fieldset>
-                <legend>Modifier un repas</legend>
-            </fieldset>
-            <table>
-                <tr>
-                    <th>Date :</th>
-                    <td><input type="date" id="editDate" name="editDate" value=""></td>
-                </tr><tr>
-                    <th>Repas :</th>
-                    <td><input type="text" id="editRepas" name="editRepas" value=""></td>
-                </tr><tr>
-                    <th>Quantité :</th>
-                    <td><input type="float" id="editQuantite" name="editQuantite" value=""></td>
-                </tr><tr>
-                    <th></th>
-                    <td><input type="submit" name="edit" value="Valider les Modifications" onclick="toggleForm('edit_repas_form')"/></td>
-                </tr>
-            </table>
-        </form> -->
-
-
-
-
-</body>
-</html>
-
-
