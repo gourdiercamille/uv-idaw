@@ -255,7 +255,7 @@
             },
                     error: function() {
                                 // Si la requête échoue, on affiche une erreur
-                                alert('Erreur lors du calcul des besoins en calories ');
+                                alert('Erreur lors du calcul des besoins en calories');
                             }
         });
     }

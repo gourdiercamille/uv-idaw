@@ -22,8 +22,8 @@ if ($method == 'GET') {
         }
     }
 
-    if (isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] != 'menu' && isset($_GET['Besoins'])) {
-        $besoins = besoinsApresRepas($_GET['login']);
+    if (isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu' && isset($_GET['Besoins'])) {
+        $besoins = besoinsApresRepas($_GET['LOGIN']);
         if ($besoins) {
             echo json_encode(mb_convert_encoding($besoins, "UTF-8"));
         } else {
@@ -32,8 +32,8 @@ if ($method == 'GET') {
         }
     }
 
-    if (isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] != 'menu' && !isset($_GET['Besoins'])) {
-        $besoins = calculBesoinsKcal($_GET['login']);
+    if (isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu' && !isset($_GET['Besoins'])) {
+        $besoins = calculBesoinsKcal($_GET['LOGIN']);
         if ($besoins) {
             echo json_encode(mb_convert_encoding($besoins, "UTF-8"));
         } else {
@@ -42,8 +42,8 @@ if ($method == 'GET') {
         }
     }
     
-    else if (!isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] != 'menu') {
-        $repas = getRepasByLogin($_GET['login']);
+    else if (!isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu') {
+        $repas = getRepasByLogin($_GET['LOGIN']);
         if ($repas) {
             echo json_encode(mb_convert_encoding($repas, "UTF-8"));
         } else {
@@ -52,7 +52,7 @@ if ($method == 'GET') {
         }
     }
     
-    else if (!isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] == 'menu') {
+    else if (!isset($_GET['Kcal']) && isset($_GET['LOGIN']) && $_GET['LOGIN'] == 'menu') {
             $repas = getAllRepas();
             if ($repas) {
                 echo json_encode(mb_convert_encoding($repas, "UTF-8"));

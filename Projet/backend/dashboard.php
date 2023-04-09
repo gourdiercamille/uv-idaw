@@ -97,20 +97,15 @@
         sexe.LIBELLE AS LIBELLE_SEXE,
         intensite_sport.LIBELLE AS LIBELLE_SPORT
         FROM
-        utilisateur, sexe, tranche_age, intensite_sport
-        WHERE utilisateur.ID_TRANCHE_AGE = tranche_age.ID_TRANCHE_AGE
-        AND utilisateur.ID_SEXE = sexe.ID_SEXE
-        AND utilisateur.ID_SPORT = intensite_sport.ID_SPORT
-        AND utilisateur.LOGIN = '$login';
+        utilisateur
+        JOIN
+        tranche_age ON utilisateur.ID_TRANCHE_AGE = tranche_age.ID_TRANCHE_AGE
+        JOIN
+        sexe ON utilisateur.ID_SEXE = sexe.ID_SEXE
+        JOIN
+        intensite_sport ON utilisateur.ID_SPORT = intensite_sport.ID_SPORT
+        WHERE utilisateur.LOGIN = '$login';
         ");
-        // JOIN
-        // tranche_age ON utilisateur.ID_TRANCHE_AGE = tranche_age.ID_TRANCHE_AGE
-        // JOIN
-        // sexe ON utilisateur.ID_SEXE = sexe.ID_SEXE
-        // JOIN
-        // intensite_sport ON utilisateur.ID_SPORT = intensite_sport.ID_SPORT
-        // WHERE utilisateur.LOGIN = '$login';
-        // ");
         $request->execute();
         $besoins = $request->fetchAll(PDO::FETCH_ASSOC);
         return $besoins;
