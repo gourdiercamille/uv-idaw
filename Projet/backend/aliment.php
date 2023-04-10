@@ -18,7 +18,7 @@
             $request2->execute([$id_aliment, 4, $fibres]);
             $request2->execute([$id_aliment, 5, $sel]);
             $request2->execute([$id_aliment, 6, $vitamines]);
-            return $id_aliment;
+            return true;
         } else {
             // Insertion échouée, retourner une valeur ou afficher un message d'erreur
             return false;

@@ -22,19 +22,44 @@ if ($method == 'GET') {
         }
     }
 
-    if (isset($_GET['LOGIN']) && $_GET['LOGIN'] != 'menu') {
-        $repas = getRepasByLogin($_GET['LOGIN']);
+    if (isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] != 'menu' && isset($_GET['Besoins'])) {
+        $besoins = besoinsApresRepas($_GET['login']);
+        if ($besoins) {
+            echo json_encode(mb_convert_encoding($besoins, "UTF-8"));
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'Besoins not found']);
+        }
+    }
+
+    if (isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] != 'menu' && !isset($_GET['Besoins'])) {
+        $besoins = calculBesoinsKcal($_GET['login']);
+        if ($besoins) {
+            echo json_encode(mb_convert_encoding($besoins, "UTF-8"));
+        } else {
+            header('HTTP/1.1 404 Not Found');
+            echo json_encode(['error' => 'Besoins not found']);
+        }
+    }
+    
+    else if (!isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] != 'menu') {
+        $repas = getRepasByLogin($_GET['login']);
         if ($repas) {
             echo json_encode(mb_convert_encoding($repas, "UTF-8"));
         } else {
             header('HTTP/1.1 404 Not Found');
-            echo json_encode(['error' => 'Repas not found']);
+            echo json_encode(['error' => 'Repas not found1']);
         }
     }
     
-    if (isset($_GET['LOGIN']) && $_GET['LOGIN'] == 'menu') {
+    else if (!isset($_GET['Kcal']) && isset($_GET['login']) && $_GET['login'] == 'menu') {
             $repas = getAllRepas();
-            echo json_encode(mb_convert_encoding($repas, "UTF-8"));
+            if ($repas) {
+                echo json_encode(mb_convert_encoding($repas, "UTF-8"));
+            } else {
+                header('HTTP/1.1 404 Not Found');
+                echo json_encode(['error' => 'Repas not found2']);
+            }
     }
 }
 
@@ -57,8 +82,8 @@ if ($method == 'POST') {
 
 //delete repas
 if ($method == 'DELETE') {
-    if (isset($_GET['LOGIN'])&&isset($_GET['ID_ALIMENT'])) {
-        $result = deleteRepasByLogin($_GET['LOGIN'], $_GET['ID_ALIMENT']);
+    if (isset($_GET['login'])&&isset($_GET['ID_ALIMENT'])) {
+        $result = deleteRepasByLogin($_GET['login'], $_GET['ID_ALIMENT']);
         if ($result) {
             header('HTTP/1.1 204 No Content');
         } else {

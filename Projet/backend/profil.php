@@ -60,5 +60,4 @@
             $request->execute([$age, $sport, $poids, $taille, $login]);
         }
 
-        echo updateUserByLogin('chacha', 1, 1, 70, 170);
 ?>
