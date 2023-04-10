@@ -3,12 +3,13 @@
 <head>
     <title>Connexion</title>
     <meta charset="utf8">
-    <link rel="stylesheet">
+    <link rel="stylesheet" href="style_index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1> Connexion </h1>
+    <h1> Bienvenue sur notre site de Nutrition ! </h1>
     <div>
+        <h2> Connectez-vous pour accéder à votre espace personnel </h2>
         <h3> Entrez votre login : </h3>
         <form id="connect-form">
             <input type="text" name="login" id="login-input">

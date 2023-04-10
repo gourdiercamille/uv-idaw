@@ -4,6 +4,7 @@
     <title>Repas</title>
     <meta charset="utf8">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="style_dashboard.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script>function menuDeroulantRepas() {
@@ -295,6 +296,25 @@
         });
     }
 
+    // Fonction pour ajouter un aliment
+    function addAliment(libelle, type_aliment, lipides, glucides, proteines, fibres, sel, vitamines) {
+        $.ajax({
+                url: URL_API + 'api_aliment.php',
+                type: 'POST',
+                data: JSON.stringify({ LIBELLE: libelle, TYPE_ALIMENT: type_aliment, LIPIDES: lipides, GLUCIDES: glucides, PROTEINES: proteines, FIBRES: fibres, SEL: sel, VITAMINES: vitamines }),
+                dataType: 'json',
+                success: function(response) {
+                    // Si la requête réussit,
+                    alert("Aliment ajouté avec succès !");
+                    location.reload();
+                },
+                error: function() {
+                    // Si la requête échoue,
+                    alert('Erreur lors de l\'ajout de l\'aliment');
+                }
+            });
+    }
+
     $(document).ready(function() {
         // Initialisation du tableau DataTable
         $('#myTable').DataTable();
@@ -335,6 +355,20 @@
         }
         });
 
+        // Ajout d'un aliment
+        $('#add-aliment-form').submit(function(e) {
+            e.preventDefault();
+            var libelle = $('#addAliment').val();
+            var type_aliment = $('#type_aliment').val();
+            var lipides = $('#quanLipide').val();
+            var glucides = $('#quanGlucide').val();
+            var proteines = $('#quanProteine').val();
+            var fibres = $('#quanFibre').val();
+            var sel = $('#quanSel').val();
+            var vitamines = $('#quanVitamine').val();
+            addAliment(libelle, type_aliment, lipides, glucides, proteines, fibres, sel, vitamines);
+        });
+
     });
 
     function toggleForm(form) {
@@ -360,6 +394,17 @@
                     <th>Libellé :</th>
                     <td><input type="text" id="addAliment" name="addAliment" value=""></td>
                 </tr><tr>
+                <th>Type d'Aliment:</th>
+                    <td></label><select id="type_aliment" name="type_aliment">
+                        <option value="1">Plat Composé</option>
+                        <option value="2">Viande, Oeuf, Poisson, Fruit de Mer</option>
+                        <option value="4">Fruit, Légume, Légumineuse</option>
+                        <option value="7">Produit laitier</option>
+                        <option value="8">Produit Céréalier</option>
+                        <option value="9">Produit Sucré</option>
+                        <option value="10">Boisson</option>
+                    </select></td>
+                </tr><tr>
                     <th>Quantité de Lipide :</th>
                     <td><input type="float" id="quanLipide" name="quanLipide" value=""></td>
                 </tr><tr>
@@ -376,32 +421,10 @@
                     <td><input type="float" id="quanSel" name="quanSel" value=""></td>
                 </tr><tr>
                     <th>Quantité de Vitamines :</th>
-                    <td><input type="float" id="quanVitamines" name="quanVitamines" value=""></td>
+                    <td><input type="float" id="quanVitamine" name="quanVitamine" value=""></td>
                 </tr><tr>
                     <th></th>
                     <td><input type="submit" name="edit" value="Ajouter cet Aliment" onclick="toggleForm('add-aliment-form')"/></td>
-                </tr>
-            </table>
-        </form>
-
-        <!--Form de modif d'un repas-->
-        <form id="edit_repas_form" method="PUT" style="display:none;">
-            <fieldset>
-                <legend>Modifier un repas</legend>
-            </fieldset>
-            <table>
-                <tr>
-                    <th>Date :</th>
-                    <td><input type="date" id="editDate" name="editDate" value=""></td>
-                </tr><tr>
-                    <th>Repas :</th>
-                    <td><input type="text" id="editRepas" name="editRepas" value=""></td>
-                </tr><tr>
-                    <th>Quantité :</th>
-                    <td><input type="float" id="editQuantite" name="editQuantite" value=""></td>
-                </tr><tr>
-                    <th></th>
-                    <td><input type="submit" name="edit" value="Valider les Modifications"/></td> <!--onclick="toggleForm('edit_repas_form')"-->
                 </tr>
             </table>
         </form>

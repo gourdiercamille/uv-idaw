@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : lun. 03 avr. 2023 à 16:16
--- Version du serveur : 8.0.31
--- Version de PHP : 8.0.26
+-- Hôte : localhost:8889
+-- Généré le : lun. 10 avr. 2023 à 00:50
+-- Version du serveur : 5.7.39
+-- Version de PHP : 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,15 +27,12 @@ SET time_zone = "+00:00";
 -- Structure de la table `aliment`
 --
 
-DROP TABLE IF EXISTS `aliment`;
-CREATE TABLE IF NOT EXISTS `aliment` (
-  `ID_ALIMENT` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `aliment` (
+  `ID_ALIMENT` int(11) NOT NULL,
   `NOM` varchar(250) NOT NULL,
-  `ID_TYPE_ALIMENT` int NOT NULL,
-  `KCALORIES_100G` decimal(10,0) NOT NULL,
-  PRIMARY KEY (`ID_ALIMENT`),
-  KEY `ID_TYPE_ALIMENT` (`ID_TYPE_ALIMENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=2816 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `ID_TYPE_ALIMENT` int(11) NOT NULL,
+  `KCALORIES_100G` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `aliment`
@@ -2859,7 +2856,10 @@ INSERT INTO `aliment` (`ID_ALIMENT`, `NOM`, `ID_TYPE_ALIMENT`, `KCALORIES_100G`)
 (2812, 'Citron givré ou Orange givrée (sorbet)', 9, '133'),
 (2813, 'Coupe glacée type café ou chocolat liégeois', 9, '217'),
 (2814, 'Bûche glacée', 9, '223'),
-(2815, 'Coupe glacée parfum pêche Melba ou poire Belle-Hélène', 9, '163');
+(2815, 'Coupe glacée parfum pêche Melba ou poire Belle-Hélène', 9, '163'),
+(2823, 'fromage qui pue', 7, '38'),
+(2824, 'repas étudiant', 2, '96'),
+(2825, 'lasagnes', 1, '51');
 
 -- --------------------------------------------------------
 
@@ -2867,14 +2867,11 @@ INSERT INTO `aliment` (`ID_ALIMENT`, `NOM`, `ID_TYPE_ALIMENT`, `KCALORIES_100G`)
 -- Structure de la table `composer`
 --
 
-DROP TABLE IF EXISTS `composer`;
-CREATE TABLE IF NOT EXISTS `composer` (
-  `ID_ALIMENT_COMPOSE` int NOT NULL,
-  `ID_ALIMENT_COMPOSANT` int NOT NULL,
-  `RATIO` float NOT NULL,
-  PRIMARY KEY (`ID_ALIMENT_COMPOSE`,`ID_ALIMENT_COMPOSANT`),
-  KEY `ID_ALIMENT_COMPOSANT` (`ID_ALIMENT_COMPOSANT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `composer` (
+  `ID_ALIMENT_COMPOSE` int(11) NOT NULL,
+  `ID_ALIMENT_COMPOSANT` int(11) NOT NULL,
+  `RATIO` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -2882,14 +2879,11 @@ CREATE TABLE IF NOT EXISTS `composer` (
 -- Structure de la table `contenir`
 --
 
-DROP TABLE IF EXISTS `contenir`;
-CREATE TABLE IF NOT EXISTS `contenir` (
-  `ID_ALIMENT` int NOT NULL,
-  `ID_MICRONUTRIMENT` int NOT NULL,
-  `RATIO` decimal(10,0) NOT NULL,
-  PRIMARY KEY (`ID_ALIMENT`,`ID_MICRONUTRIMENT`),
-  KEY `contenir_ibfk_2` (`ID_MICRONUTRIMENT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `contenir` (
+  `ID_ALIMENT` int(11) NOT NULL,
+  `ID_MICRONUTRIMENT` int(11) NOT NULL,
+  `RATIO` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `contenir`
@@ -19789,7 +19783,25 @@ INSERT INTO `contenir` (`ID_ALIMENT`, `ID_MICRONUTRIMENT`, `RATIO`) VALUES
 (2815, 3, '1'),
 (2815, 4, '0'),
 (2815, 5, '0'),
-(2815, 6, '0');
+(2815, 6, '0'),
+(2823, 1, '2'),
+(2823, 2, '3'),
+(2823, 3, '2'),
+(2823, 4, '1'),
+(2823, 5, '2'),
+(2823, 6, '2'),
+(2824, 1, '4'),
+(2824, 2, '10'),
+(2824, 3, '5'),
+(2824, 4, '5'),
+(2824, 5, '12'),
+(2824, 6, '0'),
+(2825, 1, '3'),
+(2825, 2, '3'),
+(2825, 3, '3'),
+(2825, 4, '3'),
+(2825, 5, '3'),
+(2825, 6, '3');
 
 -- --------------------------------------------------------
 
@@ -19797,12 +19809,10 @@ INSERT INTO `contenir` (`ID_ALIMENT`, `ID_MICRONUTRIMENT`, `RATIO`) VALUES
 -- Structure de la table `intensite_sport`
 --
 
-DROP TABLE IF EXISTS `intensite_sport`;
-CREATE TABLE IF NOT EXISTS `intensite_sport` (
-  `ID_SPORT` int NOT NULL AUTO_INCREMENT,
-  `LIBELLE` text NOT NULL,
-  PRIMARY KEY (`ID_SPORT`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `intensite_sport` (
+  `ID_SPORT` int(11) NOT NULL,
+  `LIBELLE` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `intensite_sport`
@@ -19819,23 +19829,32 @@ INSERT INTO `intensite_sport` (`ID_SPORT`, `LIBELLE`) VALUES
 -- Structure de la table `manger`
 --
 
-DROP TABLE IF EXISTS `manger`;
-CREATE TABLE IF NOT EXISTS `manger` (
+CREATE TABLE `manger` (
   `LOGIN` varchar(15) NOT NULL,
-  `ID_ALIMENT` int NOT NULL,
+  `ID_ALIMENT` int(11) NOT NULL,
   `QUANTITE` float NOT NULL,
-  `DATE` date NOT NULL,
-  PRIMARY KEY (`LOGIN`,`ID_ALIMENT`),
-  KEY `ID_ALIMENT` (`ID_ALIMENT`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `DATE` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `manger`
 --
 
 INSERT INTO `manger` (`LOGIN`, `ID_ALIMENT`, `QUANTITE`, `DATE`) VALUES
-('berjul', 54, 2, '2023-04-18'),
-('côtmat', 32, 1, '2023-04-05');
+('chacha', 609, 6, '2023-04-08'),
+('chacha', 908, 1, '2023-04-17'),
+('dupmar', 1228, 2, '0001-02-02'),
+('dupmar', 1257, 9, '2023-03-09'),
+('dupmar', 1566, 4, '2023-04-10'),
+('dupmar', 1651, 1, '2023-04-19'),
+('dupmar', 1810, 2, '2023-04-28'),
+('dupmar', 2473, 2, '2023-04-13'),
+('dupmar', 2561, 2, '2023-04-28'),
+('fabluc', 139, 1, '2023-04-20'),
+('fabluc', 243, 1, '2023-04-10'),
+('fabluc', 855, 5, '2023-04-16'),
+('fabluc', 2173, 1, '2023-04-10'),
+('fabluc', 2318, 5, '2023-04-10');
 
 -- --------------------------------------------------------
 
@@ -19843,12 +19862,10 @@ INSERT INTO `manger` (`LOGIN`, `ID_ALIMENT`, `QUANTITE`, `DATE`) VALUES
 -- Structure de la table `micronutriments`
 --
 
-DROP TABLE IF EXISTS `micronutriments`;
-CREATE TABLE IF NOT EXISTS `micronutriments` (
-  `ID_MICRONUTRIMENT` int NOT NULL AUTO_INCREMENT,
-  `LIBELLE` text NOT NULL,
-  PRIMARY KEY (`ID_MICRONUTRIMENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `micronutriments` (
+  `ID_MICRONUTRIMENT` int(11) NOT NULL,
+  `LIBELLE` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `micronutriments`
@@ -19868,12 +19885,10 @@ INSERT INTO `micronutriments` (`ID_MICRONUTRIMENT`, `LIBELLE`) VALUES
 -- Structure de la table `sexe`
 --
 
-DROP TABLE IF EXISTS `sexe`;
-CREATE TABLE IF NOT EXISTS `sexe` (
-  `ID_SEXE` int NOT NULL AUTO_INCREMENT,
-  `LIBELLE` text NOT NULL,
-  PRIMARY KEY (`ID_SEXE`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `sexe` (
+  `ID_SEXE` int(11) NOT NULL,
+  `LIBELLE` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `sexe`
@@ -19890,13 +19905,11 @@ INSERT INTO `sexe` (`ID_SEXE`, `LIBELLE`) VALUES
 -- Structure de la table `tranche_age`
 --
 
-DROP TABLE IF EXISTS `tranche_age`;
-CREATE TABLE IF NOT EXISTS `tranche_age` (
-  `ID_TRANCHE_AGE` int NOT NULL AUTO_INCREMENT,
-  `AGE_MIN` int NOT NULL,
-  `AGE_MAX` int NOT NULL,
-  PRIMARY KEY (`ID_TRANCHE_AGE`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tranche_age` (
+  `ID_TRANCHE_AGE` int(11) NOT NULL,
+  `AGE_MIN` int(11) NOT NULL,
+  `AGE_MAX` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `tranche_age`
@@ -19914,12 +19927,10 @@ INSERT INTO `tranche_age` (`ID_TRANCHE_AGE`, `AGE_MIN`, `AGE_MAX`) VALUES
 -- Structure de la table `type_aliment`
 --
 
-DROP TABLE IF EXISTS `type_aliment`;
-CREATE TABLE IF NOT EXISTS `type_aliment` (
-  `ID_TYPE_ALIMENT` int NOT NULL AUTO_INCREMENT,
-  `LIBELLE` text NOT NULL,
-  PRIMARY KEY (`ID_TYPE_ALIMENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `type_aliment` (
+  `ID_TYPE_ALIMENT` int(11) NOT NULL,
+  `LIBELLE` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `type_aliment`
@@ -19940,22 +19951,17 @@ INSERT INTO `type_aliment` (`ID_TYPE_ALIMENT`, `LIBELLE`) VALUES
 -- Structure de la table `utilisateur`
 --
 
-DROP TABLE IF EXISTS `utilisateur`;
-CREATE TABLE IF NOT EXISTS `utilisateur` (
+CREATE TABLE `utilisateur` (
   `LOGIN` varchar(15) NOT NULL,
   `NOM` varchar(40) NOT NULL,
   `PRENOM` varchar(20) NOT NULL,
   `MAIL` varchar(70) NOT NULL,
   `TAILLE` float NOT NULL,
   `POIDS` float NOT NULL,
-  `ID_TRANCHE_AGE` int NOT NULL,
-  `ID_SEXE` int NOT NULL,
-  `ID_SPORT` int NOT NULL,
-  PRIMARY KEY (`LOGIN`),
-  KEY `utilisateur_ibfk_1` (`ID_SEXE`),
-  KEY `utilisateur_ibfk_2` (`ID_SPORT`),
-  KEY `utilisateur_ibfk_3` (`ID_TRANCHE_AGE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `ID_TRANCHE_AGE` int(11) NOT NULL,
+  `ID_SEXE` int(11) NOT NULL,
+  `ID_SPORT` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `utilisateur`
@@ -19974,7 +19980,7 @@ INSERT INTO `utilisateur` (`LOGIN`, `NOM`, `PRENOM`, `MAIL`, `TAILLE`, `POIDS`, 
 ('bonjér', 'Bonnet', 'Jérôme', 'jérôme.bonnet@etu.imt-nord-europe.fr', 165, 69, 2, 2, 1),
 ('bouéti', 'Boucher', 'Étienne', 'étienne.boucher@etu.imt-nord-europe.fr', 196, 89, 2, 2, 3),
 ('carémi', 'Caron', 'Émile', 'émile.caron@etu.imt-nord-europe.fr', 184, 90, 2, 2, 3),
-('chacha', 'Charest', 'Charlotte', 'charlotte.charest@etu.imt-nord-europe.fr', 195, 70, 3, 1, 3),
+('chacha', 'Charest', 'Charlotte', 'charlotte.charest@etu.imt-nord-europe.fr', 194, 71, 2, 1, 2),
 ('chavic', 'Champagne', 'Victor', 'victor.champagne@etu.imt-nord-europe.fr', 176, 75, 4, 2, 2),
 ('côtmat', 'Côté', 'Mathis', 'mathis.côté@etu.imt-nord-europe.fr', 181, 73, 1, 2, 2),
 ('coudav', 'Couture', 'David', 'david.couture@etu.imt-nord-europe.fr', 181, 72, 4, 2, 1),
@@ -19985,7 +19991,7 @@ INSERT INTO `utilisateur` (`LOGIN`, `NOM`, `PRENOM`, `MAIL`, `TAILLE`, `POIDS`, 
 ('dubléo', 'Dubuc', 'Léonie', 'léonie.dubuc@etu.imt-nord-europe.fr', 174, 70, 4, 1, 1),
 ('dubtho', 'Dubois', 'Thomas', 'thomas.dubois@etu.imt-nord-europe.fr', 152, 59, 3, 2, 2),
 ('dupmar', 'Dupont', 'Marie', 'marie.dupont@etu.imt-nord-europe.fr', 166, 67, 1, 1, 3),
-('fabluc', 'Fabresse', 'Luc', 'luc.fabresse@etu.imt-nord-europe.fr', 189, 77, 3, 2, 3),
+('fabluc', 'Fabresse', 'Luc', 'luc.fabresse@etu.imt-nord-europe.fr', 186, 74, 3, 2, 2),
 ('formaë', 'Fortier', 'Maëlle', 'maëlle.fortier@etu.imt-nord-europe.fr', 166, 74, 2, 1, 3),
 ('fousar', 'Fournier', 'Sarah', 'sarah.fournier@etu.imt-nord-europe.fr', 207, 94, 2, 1, 2),
 ('gagaud', 'Gagnon', 'Audrey', 'audrey.gagnon@etu.imt-nord-europe.fr', 168, 63, 1, 1, 3),
@@ -20027,6 +20033,117 @@ INSERT INTO `utilisateur` (`LOGIN`, `NOM`, `PRENOM`, `MAIL`, `TAILLE`, `POIDS`, 
 ('simchl', 'Simon', 'Chloé', 'chloé.simon@etu.imt-nord-europe.fr', 153, 54, 2, 1, 2),
 ('thiléo', 'Thibault', 'Léonie', 'léonie.thibault@etu.imt-nord-europe.fr', 166, 74, 3, 1, 2),
 ('treoli', 'Tremblay', 'Olivier', 'olivier.tremblay@etu.imt-nord-europe.fr', 148, 58, 1, 2, 1);
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `aliment`
+--
+ALTER TABLE `aliment`
+  ADD PRIMARY KEY (`ID_ALIMENT`),
+  ADD KEY `ID_TYPE_ALIMENT` (`ID_TYPE_ALIMENT`);
+
+--
+-- Index pour la table `composer`
+--
+ALTER TABLE `composer`
+  ADD PRIMARY KEY (`ID_ALIMENT_COMPOSE`,`ID_ALIMENT_COMPOSANT`),
+  ADD KEY `ID_ALIMENT_COMPOSANT` (`ID_ALIMENT_COMPOSANT`);
+
+--
+-- Index pour la table `contenir`
+--
+ALTER TABLE `contenir`
+  ADD PRIMARY KEY (`ID_ALIMENT`,`ID_MICRONUTRIMENT`),
+  ADD KEY `contenir_ibfk_2` (`ID_MICRONUTRIMENT`);
+
+--
+-- Index pour la table `intensite_sport`
+--
+ALTER TABLE `intensite_sport`
+  ADD PRIMARY KEY (`ID_SPORT`);
+
+--
+-- Index pour la table `manger`
+--
+ALTER TABLE `manger`
+  ADD PRIMARY KEY (`LOGIN`,`ID_ALIMENT`),
+  ADD KEY `ID_ALIMENT` (`ID_ALIMENT`);
+
+--
+-- Index pour la table `micronutriments`
+--
+ALTER TABLE `micronutriments`
+  ADD PRIMARY KEY (`ID_MICRONUTRIMENT`);
+
+--
+-- Index pour la table `sexe`
+--
+ALTER TABLE `sexe`
+  ADD PRIMARY KEY (`ID_SEXE`);
+
+--
+-- Index pour la table `tranche_age`
+--
+ALTER TABLE `tranche_age`
+  ADD PRIMARY KEY (`ID_TRANCHE_AGE`);
+
+--
+-- Index pour la table `type_aliment`
+--
+ALTER TABLE `type_aliment`
+  ADD PRIMARY KEY (`ID_TYPE_ALIMENT`);
+
+--
+-- Index pour la table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  ADD PRIMARY KEY (`LOGIN`),
+  ADD KEY `utilisateur_ibfk_1` (`ID_SEXE`),
+  ADD KEY `utilisateur_ibfk_2` (`ID_SPORT`),
+  ADD KEY `utilisateur_ibfk_3` (`ID_TRANCHE_AGE`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `aliment`
+--
+ALTER TABLE `aliment`
+  MODIFY `ID_ALIMENT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2826;
+
+--
+-- AUTO_INCREMENT pour la table `intensite_sport`
+--
+ALTER TABLE `intensite_sport`
+  MODIFY `ID_SPORT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `micronutriments`
+--
+ALTER TABLE `micronutriments`
+  MODIFY `ID_MICRONUTRIMENT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT pour la table `sexe`
+--
+ALTER TABLE `sexe`
+  MODIFY `ID_SEXE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `tranche_age`
+--
+ALTER TABLE `tranche_age`
+  MODIFY `ID_TRANCHE_AGE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `type_aliment`
+--
+ALTER TABLE `type_aliment`
+  MODIFY `ID_TYPE_ALIMENT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Contraintes pour les tables déchargées
